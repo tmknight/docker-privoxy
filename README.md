@@ -1,7 +1,7 @@
 # docker-privoxy
 Privoxy for Docker
 
-Based on:
+Build based on:
 
 `Ubuntu 22.04`
 
