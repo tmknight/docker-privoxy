@@ -1,5 +1,8 @@
 FROM ubuntu:22.04
 LABEL autoheal=true
+LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
+LABEL org.opencontainers.image.description="Privoxy for Docker"
+LABEL org.opencontainers.image.licenses=GPL
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ARG DEBIAN_FRONTEND=noninteractive
