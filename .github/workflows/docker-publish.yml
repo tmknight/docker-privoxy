@@ -20,7 +20,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   # IMAGE_NAME: ${{ github.repository }}
-  IMAGE_NAME: tmknight/privoxy:latest
+  IMAGE_NAME: tmknight/privoxy
 
 
 
