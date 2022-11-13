@@ -33,6 +33,9 @@ RUN apt-get update -qq \
   /var/tmp/*
 COPY ./privoxy-start.sh /usr/local/bin/start
 COPY ./privoxy-healthcheck.sh /usr/bin/healthcheck
+RUN chmod -R +x \
+  /usr/bin/ \
+  /usr/local/bin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --interval=1m \
