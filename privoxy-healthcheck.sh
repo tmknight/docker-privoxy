@@ -8,6 +8,7 @@ if [[ $TEST && $CODE == 99 ]]
 then
     CODE=0
 else
+    TEST="false"
     CODE=${CODE:-1}
 fi
 echo "Protected=$TEST"
