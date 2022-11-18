@@ -1,4 +1,4 @@
-name: Docker Image CI for Pricoxy
+name: Docker Image CI for Privoxy
 
 on:
   push:
