@@ -11,5 +11,5 @@ else
     TEST="false"
     CODE=${CODE:-1}
 fi
-echo "Protected=$TEST"
+echo -n "Protected=$TEST"
 exit $CODE
