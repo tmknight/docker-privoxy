@@ -7,7 +7,7 @@ name: Docker Package for Privoxy
 
 on:
   schedule:
-    - cron: '37 10 * * *'
+    - cron: '00 10 * * *'
   push:
     branches: [ "main" ]
     # Publish semver tags as releases.
