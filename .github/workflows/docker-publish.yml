@@ -1,4 +1,4 @@
-name: Docker Package for Privoxy
+name: GitHub Package for Privoxy
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -7,13 +7,16 @@ name: Docker Package for Privoxy
 
 on:
   schedule:
-    - cron: '00 10 * * *'
+    - cron: '01 00 * * *'
   push:
+    paths-ignore:
+      - '.github/**'
+      - '.*.md'
+      - '..gitignore'
+      - '.LICENSE'
     branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
 
 env:
   # Use docker.io for Docker Hub if empty
