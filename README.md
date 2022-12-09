@@ -1,3 +1,5 @@
+![GitHubPackage](https://github.com/tmknight/docker-privoxy/actions/workflows/github-package.yml/badge.svg)
+
 # docker-privoxy
 Privoxy for Docker
 
