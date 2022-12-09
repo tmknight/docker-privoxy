@@ -8,6 +8,8 @@ name: GitHub Package for Privoxy
 on:
   schedule:
     - cron: '01 00 * * *'
+  release:
+    types: [published]
   push:
     paths-ignore:
       - '.github/**'
@@ -16,7 +18,7 @@ on:
       - '.LICENSE'
     branches: [ "main" ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    # tags: [ 'v*.*.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
