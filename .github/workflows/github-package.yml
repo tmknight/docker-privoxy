@@ -14,8 +14,8 @@ on:
   push:
     paths-ignore:
       - '.github/**'
-      - '.*.md'
-      - '..gitignore'
+      - '*.md'
+      - '.*'
       - '.LICENSE'
     branches: [ "main" ]
     # Publish semver tags as releases.
