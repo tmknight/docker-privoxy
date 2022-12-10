@@ -6,4 +6,4 @@ Build based on:
 
 Ubuntu `22.04`
 
-[Privoxy](https://www.privoxy.org/) `v3.0.33`
+[Privoxy](https://www.privoxy.org/) `3.0.33`
