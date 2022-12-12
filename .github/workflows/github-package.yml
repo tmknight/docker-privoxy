@@ -7,8 +7,8 @@ name: GitHub Package
 # documentation.
 
 on:
-  schedule:
-    - cron: '01 00 * * *'
+  # schedule:
+    # - cron: '01 00 * * *'
   release:
     types: [published]
   push:
