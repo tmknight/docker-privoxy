@@ -7,6 +7,7 @@ name: GitHub Package
 # documentation.
 
 on:
+  workflow_dispatch:
   # schedule:
     # - cron: '01 00 * * *'
   release:
