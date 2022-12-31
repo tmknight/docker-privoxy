@@ -1,3 +1,15 @@
+FROM ubuntu:22.04 as privoxySSL
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update -qq \
+&& apt install -qq -y \
+privoxy \
+&& apt-get clean -y -qq \
+&& rm -rf \
+/tmp/* \
+/var/cache/apt/archives/* \
+/var/lib/apt/lists/* \
+/var/tmp/*
+
 FROM alpine:3.17.0
 LABEL org.opencontainers.image.description="Privoxy for Docker"
 LABEL org.opencontainers.image.title=privoxy
@@ -6,7 +18,6 @@ LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-ARG DEBIAN_FRONTEND=noninteractive
 RUN apk --no-progress update \
   && apk --no-cache --no-progress add \
   curl \
@@ -22,9 +33,11 @@ RUN apk --no-progress update \
   && rm -rf \
   /tmp/* \
   /var/tmp/*
+COPY --from=privoxySSL /usr/sbin/privoxy /usr/sbin/privoxy
 COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
-  /usr/local/bin/
+  /usr/local/bin/ \
+  /usr/sbin/privoxy
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --interval=1m \
