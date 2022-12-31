@@ -23,7 +23,7 @@ RUN apk --no-progress update \
   curl \
   tzdata \
   jq \
-  privoxy \
+  # privoxy \
   ## user manual required for config links to work
   && mkdir -p /usr/share/doc/privoxy \
   && curl -sLJo /tmp/privoxy-user-manual.tar.gz 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=2d204d1a6a3d927e1973f60892d0294661b9cc5c;sf=tgz' \
@@ -33,11 +33,13 @@ RUN apk --no-progress update \
   && rm -rf \
   /tmp/* \
   /var/tmp/*
-COPY --from=privoxySSL /usr/sbin/privoxy /usr/sbin/privoxy
+COPY --from=privoxySSL /usr/sbin/privoxy /usr/sbin/
+COPY --from=privoxySSL /etc/privoxy/ /etc/
+COPY --from=privoxySSL /var/lib/privoxy/ /var/lib/
 COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
   /usr/local/bin/ \
-  /usr/sbin/privoxy
+  /usr/sbin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --interval=1m \
