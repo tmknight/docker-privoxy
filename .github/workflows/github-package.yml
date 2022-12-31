@@ -18,7 +18,8 @@ on:
       - '*.md'
       - '.*'
       - '.LICENSE'
-    branches: [ "main" ]
+      - 'examples'
+    branches: [ "alpine", "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
