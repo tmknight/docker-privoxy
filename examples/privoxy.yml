@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  proxy:
+    image: ghcr.io/tmknight/privoxy:latest
+    container_name: privoxy
+    mem_limit: 512m
+    memswap_limit: 640m
+    environment:
+      TZ: America/New_York
+    sysctls:
+      ## Recomended if using ipv4 only
+      - net.ipv6.conf.all.disable_ipv6=1
+    ## Route traffic through NordVPN
+    network_mode: container:nordvpn
+    volumes:
+      - /mnt/privoxy/config:/etc/privoxy
+      ## If https inspection is enabled
+      - /mnt/privoxy/certs:/var/lib/privoxy/certs
+    restart: always
