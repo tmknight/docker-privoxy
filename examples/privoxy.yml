@@ -1,9 +1,7 @@
 version: "3.8"
 services:
   proxy:
-    build:
-      context: ./
-      dockerfile: privoxy.dockerfile
+    image: ghcr.io/tmknight/privoxy:latest
     container_name: privoxy
     mem_limit: 512m
     memswap_limit: 640m
@@ -15,7 +13,7 @@ services:
     ## Route traffic through NordVPN
     network_mode: container:nordvpn
     volumes:
-      - /media/data0/privoxy/config:/etc/privoxy
+      - /mnt/privoxy/config:/etc/privoxy
       ## If https inspection is enabled
-      - /media/data0/privoxy/certs:/var/lib/privoxy/certs
+      - /mnt/privoxy/certs:/var/lib/privoxy/certs
     restart: always
