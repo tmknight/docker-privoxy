@@ -31,13 +31,11 @@ RUN apt-get update -qq \
   /var/cache/apt/archives/* \
   /var/lib/apt/lists/* \
   /var/tmp/*
-COPY ./privoxy-start.sh /usr/local/bin/start
-COPY ./privoxy-healthcheck.sh /usr/bin/healthcheck
+COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
-  /usr/bin/ \
   /usr/local/bin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --interval=1m \
-  CMD healthcheck
-CMD start
+  CMD /usr/local/bin/healthcheck
+CMD /usr/local/bin/start
