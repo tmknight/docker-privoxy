@@ -7,14 +7,6 @@ LABEL autoheal=true
 ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-## Build privoxy
-# RUN addgroup -S -g 1000 privoxy 2>/dev/null \
-#   && adduser -S -H -D \
-#   -h /home/privoxy \
-#   -s /bin/bash \
-#   -u 1000 \
-#   -G privoxy privoxy 2>/dev/null \
-#   && passwd -l privoxy 2>/dev/null
 RUN apk --update --upgrade --no-cache --no-progress add \
   curl \
   bash \
