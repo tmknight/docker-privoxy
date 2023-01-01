@@ -26,7 +26,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
     -G privoxy privoxy \
   && passwd -l privoxy \
   && mkdir /etc/privoxy \
-  && mkdir -p /var/log/privoxy
+  && mkdir -p /var/log/privoxy \
   && mkdir /usr/src \
   && cd /usr/src \
   && wget "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz" \
@@ -45,16 +45,16 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && cd / \
   && rm -rf /usr/src \
   && chown -R privoxy:privoxy /var/log/privoxy \
-  && apk --no-progress del alpine-sdk zlib-dev openssl-dev pcre-dev autoconf \
-  ## Build user manual
-  && apk --no-cache --no-progress add \
+  && apk --no-progress del alpine-sdk zlib-dev openssl-dev pcre-dev autoconf
+## Build user manual
+RUN apk --update --upgrade --no-cache --no-progress add \
   curl \
   tzdata \
   jq \
   ## user manual required for config links to work
   && mkdir -p /usr/share/doc/privoxy \
   && curl -sLJo /tmp/privoxy-user-manual.tar.gz 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=2d204d1a6a3d927e1973f60892d0294661b9cc5c;sf=tgz' \
-  && tar -xC /usr/share/doc/privoxy/ -f /tmp/privoxy-user-manual.tar.gz \
+  && tar xC /usr/share/doc/privoxy/ -f /tmp/privoxy-user-manual.tar.gz \
   && mv /usr/share/doc/privoxy/privoxy-2d204d1 /usr/share/doc/privoxy/user-manual \
   ## cleanup
   && rm -rf \
