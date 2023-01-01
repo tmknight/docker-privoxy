@@ -36,6 +36,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   --localstatedir=/var \
   --enable-compression \
   --with-openssl \
+  --enable-extended-statistics \
   && make \
   && make -s install \
   && cd / \
