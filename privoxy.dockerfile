@@ -7,7 +7,7 @@ LABEL autoheal=true
 ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-## Build privoxy  
+## Build privoxy
 RUN passwd -l root \
   && apk --update --upgrade --no-cache --no-progress add \
   bash \
@@ -21,10 +21,10 @@ RUN passwd -l root \
   openssl-dev \
   && addgroup -S -g 1000 privoxy \
   && adduser -S -H -D \
-    -h /home/privoxy \
-    -s /bin/bash \
-    -u 1000 \
-    -G privoxy privoxy \
+  -h /home/privoxy \
+  -s /bin/bash \
+  -u 1000 \
+  -G privoxy privoxy \
   && passwd -l privoxy \
   && mkdir /etc/privoxy \
   && mkdir -p /var/log/privoxy \
@@ -36,22 +36,22 @@ RUN passwd -l root \
   && autoheader \
   && autoconf \
   && ./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --enable-compression \
-    --with-openssl \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --enable-compression \
+  --with-openssl \
   && make \
   && make -s install \
   && cd / \
   && rm -rf /usr/src \
   && chown -R privoxy:privoxy /var/log/privoxy \
   && apk --no-progress del \
-    alpine-sdk \
-    zlib-dev \
-    openssl-dev \
-    pcre-dev \
-    autoconf
+  alpine-sdk \
+  zlib-dev \
+  openssl-dev \
+  pcre-dev \
+  autoconf
 ## Build user manual
 RUN apk --update --upgrade --no-cache --no-progress add \
   curl \
