@@ -8,7 +8,15 @@ ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
+# RUN addgroup -S -g 1000 privoxy 2>/dev/null \
+#   && adduser -S -H -D \
+#   -h /home/privoxy \
+#   -s /bin/bash \
+#   -u 1000 \
+#   -G privoxy privoxy 2>/dev/null \
+#   && passwd -l privoxy 2>/dev/null
 RUN apk --update --upgrade --no-cache --no-progress add \
+  curl \
   bash \
   alpine-sdk \
   autoconf \
@@ -17,19 +25,13 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   zlib \
   zlib-dev \
   openssl \
-  openssl-dev
-RUN addgroup -S -g 1000 privoxy 2>/dev/null \
-  && adduser -S -H -D \
-  -h /home/privoxy \
-  -s /bin/bash \
-  -u 1000 \
-  -G privoxy privoxy 2>/dev/null \
-  && passwd -l privoxy 2>/dev/null
-RUN mkdir -p /etc/privoxy \
+  openssl-dev \
+  privoxy \
+  && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && mkdir -p /usr/src \
   && cd /usr/src \
-  && wget "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz" \
+  && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz/download" \
   && tar xzvf privoxy-${PRIVOXYVERSION}-stable-src.tar.gz \
   && cd privoxy-${PRIVOXYVERSION}-stable \
   && autoheader \
@@ -44,8 +46,8 @@ RUN mkdir -p /etc/privoxy \
   && make -s install \
   && cd / \
   && rm -rf /usr/src \
-  && chown -R privoxy:privoxy /var/log/privoxy
-RUN apk --no-progress del \
+  && chown -R privoxy:privoxy /var/log/privoxy \
+  && apk --no-progress del \
   alpine-sdk \
   zlib-dev \
   openssl-dev \
@@ -53,7 +55,6 @@ RUN apk --no-progress del \
   autoconf
 ## Build user manual
 RUN apk --update --upgrade --no-cache --no-progress add \
-  curl \
   tzdata \
   jq \
   ## user manual required for config links to work
