@@ -1,29 +1,56 @@
-FROM ubuntu:22.04 as privoxySSL
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt update -qq \
-&& apt install -qq -y \
-privoxy \
-&& apt-get clean -y -qq \
-&& rm -rf \
-/tmp/* \
-/var/cache/apt/archives/* \
-/var/lib/apt/lists/* \
-/var/tmp/*
-
 FROM alpine:3.17.0
 LABEL org.opencontainers.image.description="Privoxy for Docker"
 LABEL org.opencontainers.image.title=privoxy
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL autoheal=true
+ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-RUN apk --no-progress update \
+## Build privoxy  
+RUN apk --update --upgrade --no-cache --no-progress add \
+  bash \
+  alpine-sdk \
+  autoconf \
+  pcre \
+  pcre-dev \
+  zlib \
+  zlib-dev \
+  openssl \
+  openssl-dev \
+  && addgroup -S -g 1000 privoxy \
+  && adduser -S -H -D \
+    -h /home/privoxy \
+    -s /bin/bash \
+    -u 1000 
+    -G privoxy privoxy \
+  && passwd -l privoxy \
+  && mkdir /etc/privoxy \
+  && mkdir -p /var/log/privoxy
+  && mkdir /usr/src \
+  && cd /usr/src \
+  && wget "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz" \
+  && tar xzvf privoxy-${PRIVOXYVERSION}-stable-src.tar.gz \
+  && cd privoxy-${PRIVOXYVERSION}-stable \
+  && autoheader \
+  && autoconf \
+  && ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-compression \
+    --with-openssl \
+  && make \
+  && make install \
+  && cd / \
+  && rm -rf /usr/src \
+  && chown -R privoxy:privoxy /var/log/privoxy \
+  && apk --no-progress del alpine-sdk zlib-dev openssl-dev pcre-dev autoconf \
+  ## Build user manual
   && apk --no-cache --no-progress add \
   curl \
   tzdata \
   jq \
-  # privoxy \
   ## user manual required for config links to work
   && mkdir -p /usr/share/doc/privoxy \
   && curl -sLJo /tmp/privoxy-user-manual.tar.gz 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=2d204d1a6a3d927e1973f60892d0294661b9cc5c;sf=tgz' \
@@ -33,13 +60,9 @@ RUN apk --no-progress update \
   && rm -rf \
   /tmp/* \
   /var/tmp/*
-COPY --from=privoxySSL /usr/sbin/privoxy /usr/sbin/
-COPY --from=privoxySSL /etc/privoxy/ /etc/
-COPY --from=privoxySSL /var/lib/privoxy/ /var/lib/
 COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
-  /usr/local/bin/ \
-  /usr/sbin/
+  /usr/local/bin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --interval=1m \
