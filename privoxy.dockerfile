@@ -22,7 +22,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && adduser -S -H -D \
     -h /home/privoxy \
     -s /bin/bash \
-    -u 1000 
+    -u 1000 \
     -G privoxy privoxy \
   && passwd -l privoxy \
   && mkdir /etc/privoxy \
