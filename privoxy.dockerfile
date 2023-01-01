@@ -8,7 +8,8 @@ ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy  
-RUN apk --update --upgrade --no-cache --no-progress add \
+RUN passwd -l root \
+  && apk --update --upgrade --no-cache --no-progress add \
   bash \
   alpine-sdk \
   autoconf \
@@ -41,11 +42,16 @@ RUN apk --update --upgrade --no-cache --no-progress add \
     --enable-compression \
     --with-openssl \
   && make \
-  && make install \
+  && make -s install \
   && cd / \
   && rm -rf /usr/src \
   && chown -R privoxy:privoxy /var/log/privoxy \
-  && apk --no-progress del alpine-sdk zlib-dev openssl-dev pcre-dev autoconf
+  && apk --no-progress del \
+    alpine-sdk \
+    zlib-dev \
+    openssl-dev \
+    pcre-dev \
+    autoconf
 ## Build user manual
 RUN apk --update --upgrade --no-cache --no-progress add \
   curl \
