@@ -8,8 +8,7 @@ ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
-RUN passwd -l root 2>/dev/null \
-  && apk --update --upgrade --no-cache --no-progress add \
+RUN apk --update --upgrade --no-cache --no-progress add \
   bash \
   alpine-sdk \
   autoconf \
@@ -18,15 +17,15 @@ RUN passwd -l root 2>/dev/null \
   zlib \
   zlib-dev \
   openssl \
-  openssl-dev \
-  && addgroup -S -g 1000 privoxy 2>/dev/null \
+  openssl-dev
+RUN addgroup -S -g 1000 privoxy 2>/dev/null \
   && adduser -S -H -D \
   -h /home/privoxy \
   -s /bin/bash \
   -u 1000 \
   -G privoxy privoxy 2>/dev/null \
-  && passwd -l privoxy 2>/dev/null \
-  && mkdir -p /etc/privoxy \
+  && passwd -l privoxy 2>/dev/null
+RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && mkdir -p /usr/src \
   && cd /usr/src \
@@ -45,8 +44,8 @@ RUN passwd -l root 2>/dev/null \
   && make -s install \
   && cd / \
   && rm -rf /usr/src \
-  && chown -R privoxy:privoxy /var/log/privoxy \
-  && apk --no-progress del \
+  && chown -R privoxy:privoxy /var/log/privoxy
+RUN apk --no-progress del \
   alpine-sdk \
   zlib-dev \
   openssl-dev \
