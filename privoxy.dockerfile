@@ -8,7 +8,7 @@ ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
-RUN passwd -l root \
+RUN passwd -l root 2>/dev/null \
   && apk --update --upgrade --no-cache --no-progress add \
   bash \
   alpine-sdk \
@@ -19,16 +19,16 @@ RUN passwd -l root \
   zlib-dev \
   openssl \
   openssl-dev \
-  && addgroup -S -g 1000 privoxy \
+  && addgroup -S -g 1000 privoxy 2>/dev/null \
   && adduser -S -H -D \
   -h /home/privoxy \
   -s /bin/bash \
   -u 1000 \
-  -G privoxy privoxy \
-  && passwd -l privoxy \
-  && mkdir /etc/privoxy \
+  -G privoxy privoxy 2>/dev/null \
+  && passwd -l privoxy 2>/dev/null \
+  && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
-  && mkdir /usr/src \
+  && mkdir -p /usr/src \
   && cd /usr/src \
   && wget "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXYVERSION}-stable-src.tar.gz \
