@@ -23,7 +23,9 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: tmknight88/privoxy
+  USER: tmknight88
+  NAME: privoxy
+  IMAGE_NAME: ${{ env.USER }}/${{ env.NAME }}
 
 
 jobs:
@@ -79,7 +81,7 @@ jobs:
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
           context: .
-          file: nordvpn.dockerfile
+          file: ${{ env.NAME }}.dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
