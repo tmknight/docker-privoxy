@@ -38,7 +38,7 @@ jobs:
       id-token: write
 
     env:
-        IMAGE_NAME: ${{ env.USER }}/${{ env.NAME }}
+      IMAGE_NAME: ${{ env.USER }}/${{ env.NAME }}
         
     steps:
       - name: Checkout repository
