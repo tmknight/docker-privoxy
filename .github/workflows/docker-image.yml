@@ -1,15 +1,17 @@
 name: Docker Image CI for Privoxy
 
 on:
-  push:
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
-      - '.*'
-      - '.LICENSE'
-    branches: [ "main" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+  workflow_dispatch:
+  # push:
+    # paths-ignore:
+      # - '.github/**'
+      # - '*.md'
+      # - '.*'
+      # - '.LICENSE'
+    # branches: [ "main" ]
+    # tags: [ 'v*.*.*' ]
+  # pull_request:
+    # branches: [ "main" ]
 
 jobs:
 
