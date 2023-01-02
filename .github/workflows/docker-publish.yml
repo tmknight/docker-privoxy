@@ -25,7 +25,6 @@ env:
   # github.repository as <account>/<repo>
   USER: tmknight88
   NAME: privoxy
-  IMAGE_NAME: $USER/$NAME
       
 jobs:
   build:
@@ -38,6 +37,9 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
+    env:
+        IMAGE_NAME: ${{ env.USER }}/${{ env.NAME }}
+        
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
