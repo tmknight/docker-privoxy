@@ -24,9 +24,8 @@ env:
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
   NAME: privoxy
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ NAME }}
-
-
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/$NAME
+      
 jobs:
   build:
 
