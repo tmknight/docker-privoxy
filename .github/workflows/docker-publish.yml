@@ -23,8 +23,9 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
+  USER: tmknight88
   NAME: privoxy
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/$NAME
+  IMAGE_NAME: $USER/$NAME
       
 jobs:
   build:
