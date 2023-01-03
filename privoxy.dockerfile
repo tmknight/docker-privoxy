@@ -1,9 +1,9 @@
 FROM alpine:3.17.0
+LABEL org.opencontainers.image.base.name="alpine:3.17.0"
 LABEL org.opencontainers.image.description="Privoxy for Docker"
+LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.title=privoxy
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
-LABEL org.opencontainers.image.licenses=GPL-3.0
-LABEL org.opencontainers.image.base.name="alpine:3.17.0"
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
@@ -11,9 +11,8 @@ ENV CONFFILE=/etc/privoxy/config \
 ARG PRIVOXYVERSION=3.0.33
 RUN apk --update --upgrade --no-cache --no-progress add \
   alpine-sdk \
-  # bash \
-  curl \
   autoconf \
+  curl \
   jq \
   openssl \
   openssl-dev \
@@ -42,6 +41,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && make -s install \
   && cd / \
   && chown -R privoxy:privoxy /var/log/privoxy \
+  ## remove unnecessary packages
   && apk --no-progress del \
   alpine-sdk \
   autoconf \
@@ -49,9 +49,11 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   pcre-dev \
   zlib-dev \
   ## cleanup
+  ## we want just the user-manual
   && mv /usr/share/doc/privoxy/user-manual/ /tmp/ \
   && rm -rf /usr/share/doc/privoxy/* \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
+  ## remove temp files
   && rm -rf \
   /tmp/* \
   /var/tmp/*
