@@ -5,27 +5,27 @@ LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.base.name="alpine:3.17.0"
 LABEL autoheal=true
-ARG PRIVOXYVERSION=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
+## Build privoxy
+ARG PRIVOXYVERSION=3.0.33
 RUN apk --update --upgrade --no-cache --no-progress add \
-  curl \
-  bash \
   alpine-sdk \
+  # bash \
+  curl \
   autoconf \
-  pcre \
-  pcre-dev \
-  zlib \
-  zlib-dev \
+  jq \
   openssl \
   openssl-dev \
-  tzdata \
-  jq \
+  pcre \
+  pcre-dev \
   privoxy \
+  tzdata \
+  zlib \
+  zlib-dev \
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
-  && mkdir -p /usr/src \
-  && cd /usr/src \
+  && cd /tmp/ \
   && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz/download" \
   && tar xzvf privoxy-${PRIVOXYVERSION}-stable-src.tar.gz \
   && cd privoxy-${PRIVOXYVERSION}-stable \
@@ -41,21 +41,17 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && make \
   && make -s install \
   && cd / \
-  && rm -rf /usr/src \
   && chown -R privoxy:privoxy /var/log/privoxy \
   && apk --no-progress del \
   alpine-sdk \
-  zlib-dev \
+  autoconf \
   openssl-dev \
   pcre-dev \
-  autoconf
-## Build user manual
-## user manual required for config links to work
-RUN  mkdir -p /usr/share/doc/privoxy \
-  && curl -sLJo /tmp/privoxy-user-manual.tar.gz 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=2d204d1a6a3d927e1973f60892d0294661b9cc5c;sf=tgz' \
-  && tar xC /usr/share/doc/privoxy/ -f /tmp/privoxy-user-manual.tar.gz \
-  && mv /usr/share/doc/privoxy/privoxy-2d204d1 /usr/share/doc/privoxy/user-manual \
+  zlib-dev \
   ## cleanup
+  && mv /usr/share/doc/privoxy/user-manual/ /tmp/ \
+  && rm -rf /usr/share/doc/privoxy/* \
+  && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   && rm -rf \
   /tmp/* \
   /var/tmp/*
