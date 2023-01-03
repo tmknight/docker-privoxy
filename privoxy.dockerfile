@@ -18,7 +18,7 @@ RUN apt-get update -qq \
   jq \
   privoxy \
   ## user manual required for config links to work
-  && rm -R /usr/share/doc/privoxy/user-manual \
+  && rm -rf /usr/share/doc/privoxy/* \
   && curl -sLJo /tmp/privoxy-user-manual.tar.gz 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=2d204d1a6a3d927e1973f60892d0294661b9cc5c;sf=tgz' \
   && tar -xC /usr/share/doc/privoxy/ -f /tmp/privoxy-user-manual.tar.gz \
   && mv /usr/share/doc/privoxy/privoxy-2d204d1 /usr/share/doc/privoxy/user-manual \
