@@ -48,6 +48,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## rename config files
   && rename -a '.new' '' /etc/privoxy/*.new \
+  ## cleanup
   ## remove unnecessary packages
   && apk --no-progress del \
   alpine-sdk \
@@ -55,7 +56,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   openssl-dev \
   pcre-dev \
   zlib-dev \
-  ## cleanup
+  util-linux-misc \
   ## remove temp files
   && rm -rf \
   /tmp/* \
