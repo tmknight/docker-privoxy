@@ -22,6 +22,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   tzdata \
   zlib \
   zlib-dev \
+  util-linux-misc \
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
@@ -41,6 +42,12 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && make -s install \
   && cd / \
   && chown -R privoxy:privoxy /var/log/privoxy \
+  ## we want just the user-manual
+  && mv /usr/share/doc/privoxy/user-manual/ /tmp/ \
+  && rm -rf /usr/share/doc/privoxy/* \
+  && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
+  ## rename config files
+  && rename -a '.new' '' /etc/privoxy/*.new \
   ## remove unnecessary packages
   && apk --no-progress del \
   alpine-sdk \
@@ -49,10 +56,6 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   pcre-dev \
   zlib-dev \
   ## cleanup
-  ## we want just the user-manual
-  && mv /usr/share/doc/privoxy/user-manual/ /tmp/ \
-  && rm -rf /usr/share/doc/privoxy/* \
-  && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## remove temp files
   && rm -rf \
   /tmp/* \
