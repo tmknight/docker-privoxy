@@ -17,5 +17,5 @@ Build based on:
 [GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
 [DockerPublishingBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/docker-publish.yml/badge.svg
 [DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=black&color=green
-[DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/1.1.1-ubuntu?icon=docker&label=Docker+Size&labelColor=black&color=green
+[DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/1.1.2-ubuntu?icon=docker&label=Docker+Size&labelColor=black&color=green
 [DockerLink]: https://hub.docker.com/r/tmknight88/privoxy
