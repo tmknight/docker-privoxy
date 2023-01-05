@@ -1,36 +1,65 @@
-FROM ubuntu:22.04
+FROM alpine:3.17.0
+LABEL org.opencontainers.image.base.name="alpine:3.17.0"
 LABEL org.opencontainers.image.description="Privoxy for Docker"
+LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.title=privoxy
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
-LABEL org.opencontainers.image.licenses=GPL-3.0
-LABEL org.opencontainers.image.base.name="ubuntu:22.04"
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -qq \
-  && apt-get dist-upgrade -qq -y \
-  && apt-get install --no-install-recommends -qq -y \
-  apt-utils \
+## Build privoxy
+ARG PRIVOXYVERSION=3.0.33
+RUN apk --update --upgrade --no-cache --no-progress add \
+  alpine-sdk \
+  autoconf \
   curl \
-  ca-certificates \
-  tzdata \
   jq \
+  openssl \
+  openssl-dev \
+  pcre \
+  pcre-dev \
   privoxy \
-  ## user manual required for config links to work
-  && rm -R /usr/share/doc/privoxy/user-manual \
-  && curl -sLJo /tmp/privoxy-user-manual.tar.gz 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=2d204d1a6a3d927e1973f60892d0294661b9cc5c;sf=tgz' \
-  && tar -xC /usr/share/doc/privoxy/ -f /tmp/privoxy-user-manual.tar.gz \
-  && mv /usr/share/doc/privoxy/privoxy-2d204d1 /usr/share/doc/privoxy/user-manual \
+  tzdata \
+  zlib \
+  zlib-dev \
+  util-linux-misc \
+  && mkdir -p /etc/privoxy \
+  && mkdir -p /var/log/privoxy \
+  && cd /tmp/ \
+  && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz/download" \
+  && tar xzvf privoxy-${PRIVOXYVERSION}-stable-src.tar.gz \
+  && cd privoxy-${PRIVOXYVERSION}-stable \
+  && autoheader \
+  && autoconf \
+  && ./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --enable-compression \
+  --with-openssl \
+  --enable-extended-statistics \
+  && make \
+  && make -s install \
+  && cd / \
+  && chown -R privoxy:privoxy /var/log/privoxy \
+  ## we want just the user-manual
+  && mv /usr/share/doc/privoxy/user-manual/ /tmp/ \
+  && rm -rf /usr/share/doc/privoxy/* \
+  && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
+  ## rename config files
+  && rename -a '.new' '' /etc/privoxy/*.new \
   ## cleanup
-  && apt-get remove -qq -y \
-  apt-utils \
-  && apt-get autoremove -y -qq \
-  && apt-get clean -y -qq \
+  ## remove unnecessary packages
+  && apk --no-progress del \
+  alpine-sdk \
+  autoconf \
+  openssl-dev \
+  pcre-dev \
+  zlib-dev \
+  util-linux-misc \
+  ## remove temp files
   && rm -rf \
   /tmp/* \
-  /var/cache/apt/archives/* \
-  /var/lib/apt/lists/* \
   /var/tmp/*
 COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
