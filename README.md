@@ -1,4 +1,4 @@
-# Privoxy
+# Docker Privoxy
 
 [![GitHubPackage][GitHubPackageBadge]][GitHubPackageLink]
 [![DockerPublishing][DockerPublishingBadge]][DockerLink]
