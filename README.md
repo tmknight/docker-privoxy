@@ -5,7 +5,7 @@
 [![DockerSize][DockerSizeBadge]][DockerLink]
 [![DockerPulls][DockerPullsBadge]][DockerLink]
 
-### Privoxy non-caching web proxy for Docker
+### The Privoxy non-caching web proxy for Docker
 
 A companion project leveraging [NordVPN](https://github.com/tmknight/docker-nordvpn)
 
