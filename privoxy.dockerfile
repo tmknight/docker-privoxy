@@ -1,7 +1,7 @@
-ARG UBUBTU_VER=22.04
-FROM ubuntu:${UBUBTU_VER}
-ARG UBUBTU_VER
-LABEL org.opencontainers.image.base.name="ubuntu:${UBUBTU_VER}"
+ARG UBUNTU_VER=22.04
+FROM ubuntu:${UBUNTU_VER}
+ARG UBUNTU_VER
+LABEL org.opencontainers.image.base.name="ubuntu:${UBUNTU_VER}"
 LABEL org.opencontainers.image.description="Privoxy for Docker"
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
