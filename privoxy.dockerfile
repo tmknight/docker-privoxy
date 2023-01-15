@@ -1,11 +1,10 @@
 ARG ALPINE_VER=3.17.1
 FROM alpine:${ALPINE_VER}
-ENV ALPINE_VER=${ALPINE_VER}
 LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
 LABEL org.opencontainers.image.description="Privoxy for Docker"
 LABEL org.opencontainers.image.licenses=GPL-3.0
-LABEL org.opencontainers.image.title=privoxy
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
+LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ARG PRIVOXY_VER=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
