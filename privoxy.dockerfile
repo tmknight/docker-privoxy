@@ -1,9 +1,11 @@
-FROM ubuntu:22.04
+ARG UBUBTU_VER=22.04
+FROM ubuntu:${UBUBTU_VER}
+ARG UBUBTU_VER
+LABEL org.opencontainers.image.base.name="ubuntu:${UBUBTU_VER}"
 LABEL org.opencontainers.image.description="Privoxy for Docker"
-LABEL org.opencontainers.image.title=privoxy
-LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.licenses=GPL-3.0
-LABEL org.opencontainers.image.base.name="ubuntu:22.04"
+LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
+LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
