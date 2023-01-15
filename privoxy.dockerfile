@@ -1,14 +1,15 @@
-FROM alpine:3.17.0
-LABEL org.opencontainers.image.base.name="alpine:3.17.0"
+ARG ALPINE_VER=3.17.1
+FROM alpine:${ALPINE_VER}
+LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
 LABEL org.opencontainers.image.description="Privoxy for Docker"
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.title=privoxy
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL autoheal=true
+ARG PRIVOXY_VER=3.0.33
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
-ARG PRIVOXYVERSION=3.0.33
 RUN apk --update --upgrade --no-cache --no-progress add \
   alpine-sdk \
   autoconf \
@@ -26,9 +27,9 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
-  && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXYVERSION}%20%28stable%29/privoxy-${PRIVOXYVERSION}-stable-src.tar.gz/download" \
-  && tar xzvf privoxy-${PRIVOXYVERSION}-stable-src.tar.gz \
-  && cd privoxy-${PRIVOXYVERSION}-stable \
+  && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz/download" \
+  && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
+  && cd privoxy-${PRIVOXY_VER}-stable \
   && autoheader \
   && autoconf \
   && ./configure \
