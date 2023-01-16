@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   proxy:
-    image: ghcr.io/tmknight/privoxy:latest
+    image: ghcr.io/tmknight/privoxy:ubuntu
     container_name: privoxy
     mem_limit: 512m
     memswap_limit: 640m
