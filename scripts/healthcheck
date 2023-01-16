@@ -4,7 +4,7 @@
 CODE=99
 URI=https://nordvpn.com/wp-admin/admin-ajax.php?action=get_user_info_data
 TEST=$(curl -fs ${URI} | jq .status) || CODE=2
-if [[ -n ${TEST} && ${CODE} == 99 ]]
+if [[ -n ${TEST} && ${CODE} -eq 99 ]]
 then
     CODE=0
 else
