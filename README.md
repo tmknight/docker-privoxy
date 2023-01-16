@@ -9,9 +9,9 @@
 
 A companion project leveraging [Docker NordVPN](https://github.com/tmknight/docker-nordvpn)
 
-Build based on
+Two versions with build based on
 
-- Alpine `3.17.0`
+- Alpine `3.17.1` or Ubuntu `22.04`
 - [Privoxy](https://www.privoxy.org/) `3.0.33`
   - With support for [SSL inspection](https://www.privoxy.org/faq/misc.html#SSL) 
 
