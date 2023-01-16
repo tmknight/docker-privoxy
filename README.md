@@ -2,7 +2,8 @@
 
 [![GitHubPackage][GitHubPackageBadge]][GitHubPackageLink]
 [![DockerPublishing][DockerPublishingBadge]][DockerLink]
-[![DockerSize][DockerSizeBadge]][DockerLink]
+[![DockerAlpineSize][DockerSizeAlpineBadge]][DockerLink]
+[![DockerUbuntuSize][DockerSizeUbuntuBadge]][DockerLink]
 [![DockerPulls][DockerPullsBadge]][DockerLink]
 
 ### The Privoxy non-caching web proxy for Docker
@@ -19,5 +20,6 @@ Two versions with build based on
 [GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
 [DockerPublishingBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/docker-publish.yml/badge.svg
 [DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=black&color=green
-[DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/1.1.2-alpine?icon=docker&label=Docker+Size&labelColor=black&color=green
+[DockerSizeAlpineBadge]: https://badgen.net/docker/size/tmknight88/privoxy/1.1.2-alpine?icon=docker&label=Alpine+Size&labelColor=black&color=green
+[DockerSizeUbuntuBadge]: https://badgen.net/docker/size/tmknight88/privoxy/1.1.2-ubuntu?icon=docker&label=Ubuntu+Size&labelColor=black&color=green
 [DockerLink]: https://hub.docker.com/r/tmknight88/privoxy
