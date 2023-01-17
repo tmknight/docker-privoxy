@@ -20,6 +20,6 @@ Two versions with build based on
 [GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
 [DockerPublishingBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/docker-publish.yml/badge.svg
 [DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=black&color=green
-[DockerSizeAlpineBadge]: https://badgen.net/docker/size/tmknight88/privoxy/20230116-alpine?icon=docker&label=Alpine+Size&labelColor=black&color=green
+[DockerSizeAlpineBadge]: https://badgen.net/docker/size/tmknight88/privoxy/20230117-alpine?icon=docker&label=Alpine+Size&labelColor=black&color=green
 [DockerSizeUbuntuBadge]: https://badgen.net/docker/size/tmknight88/privoxy/20230116-ubuntu?icon=docker&label=Ubuntu+Size&labelColor=black&color=green
 [DockerLink]: https://hub.docker.com/r/tmknight88/privoxy
