@@ -13,6 +13,7 @@ Build based on
 
 - Alpine `3.17.1`
 - [Privoxy](https://www.privoxy.org/) `3.0.33`
+  - Built from [source](https://www.privoxy.org/gitweb/?p=privoxy.git;a=summary)
   - With support for [SSL inspection](https://www.privoxy.org/faq/misc.html#SSL) 
 
 [GitHubPackageBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/github-package.yml/badge.svg
