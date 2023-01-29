@@ -28,10 +28,14 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
+  ## Sourceforge stable
   # && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz/download" \
+  # && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
+  ## Git snapshot (2023-01-22)
   && curl -sLJ -o privoxy-${PRIVOXY_VER}-stable-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=b06af9867c069e30d4a35e6c961806962c20e13c;sf=tgz" \
   && mkdir ./privoxy-${PRIVOXY_VER}-stable \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz -C ./privoxy-${PRIVOXY_VER}-stable --strip-components=1 \
+  ## End source decision
   && cd ./privoxy-${PRIVOXY_VER}-stable \
   && autoheader \
   && autoconf \
