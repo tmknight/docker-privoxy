@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
-ARG PRIVOXY_VER=3.0.33
+ARG PRIVOXY_VER=3.0.34
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
@@ -28,9 +28,15 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
-  && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz/download" \
-  && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
-  && cd privoxy-${PRIVOXY_VER}-stable \
+  ## Sourceforge stable
+  # && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz/download" \
+  # && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
+  ## Git snapshot (2023-01-22)
+  && curl -sLJ -o privoxy-${PRIVOXY_VER}-stable-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=b06af9867c069e30d4a35e6c961806962c20e13c;sf=tgz" \
+  && mkdir ./privoxy-${PRIVOXY_VER}-stable \
+  && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz -C ./privoxy-${PRIVOXY_VER}-stable --strip-components=1 \
+  ## End source decision
+  && cd ./privoxy-${PRIVOXY_VER}-stable \
   && autoheader \
   && autoconf \
   && ./configure \
