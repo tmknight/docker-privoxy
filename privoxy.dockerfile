@@ -1,4 +1,4 @@
-ARG ALPINE_VER=3.17.1
+ARG ALPINE_VER=3.17.2
 FROM alpine:${ALPINE_VER}
 ARG ALPINE_VER
 LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
