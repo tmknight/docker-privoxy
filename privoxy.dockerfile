@@ -1,4 +1,4 @@
-ARG ALPINE_VER=3.17.1
+ARG ALPINE_VER=3.17.2
 FROM alpine:${ALPINE_VER}
 ARG ALPINE_VER
 LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
@@ -11,7 +11,7 @@ ARG PRIVOXY_VER=3.0.34
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
-RUN apk --update --upgrade --no-cache --no-progress add \
+RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   alpine-sdk \
   autoconf \
   curl \
@@ -58,7 +58,7 @@ RUN apk --update --upgrade --no-cache --no-progress add \
   && rename -a '.new' '' /etc/privoxy/*.new \
   ## cleanup
   ## remove unnecessary packages
-  && apk --no-progress del \
+  && apk del --no-progress --quiet \
   alpine-sdk \
   autoconf \
   openssl-dev \
