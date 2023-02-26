@@ -74,6 +74,6 @@ RUN chmod -R +x \
   /usr/local/bin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
-HEALTHCHECK --interval=1m \
+HEALTHCHECK --start-period=10s --timeout=3s \
   CMD /usr/local/bin/healthcheck
 CMD /usr/local/bin/start
