@@ -31,8 +31,9 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: tmknight/privoxy
   # Build args
-  BUILD_ARGS: "ALPINE_VER=3.17.2"
-
+  BUILD_ARGS: |
+    "ALPINE_VER=3.17.2"
+    "PRIVOXY_VER=3.0.34"
 
 jobs:
   build:
