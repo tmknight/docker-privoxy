@@ -26,10 +26,11 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
+  # name of image
+  IMAGE: privoxy
   # github.repository as <account>/<repo>
-  # IMAGE_NAME: ${{ github.repository }}
   IMAGE_NAME: tmknight/privoxy
-  # Alpine version
+  # Build args
   BUILD_ARGS: "ALPINE_VER=3.17.2"
 
 
@@ -87,7 +88,7 @@ jobs:
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
           context: .
-          file: privoxy.dockerfile
+          file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}

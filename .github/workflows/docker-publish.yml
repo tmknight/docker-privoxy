@@ -25,7 +25,9 @@ env:
   # github.repository as <account>/<repo>
   USER: tmknight88
   IMAGE: privoxy
-      
+  # Build args
+  BUILD_ARGS: "ALPINE_VER=3.17.2"
+
 jobs:
   build:
 
@@ -36,7 +38,7 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-        
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -81,6 +83,7 @@ jobs:
         with:
           context: .
           file: ${{ env.IMAGE }}.dockerfile
+          build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
