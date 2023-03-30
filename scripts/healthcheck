@@ -2,9 +2,9 @@
 ## Assumes routed through NordVPN connection
 ## API Call
 CODE=99
-URI=https://nordvpn.com/wp-admin/admin-ajax.php?action=get_user_info_data
-TEST=$(curl -fs ${URI} | jq .status) || CODE=1
-if [[ ${TEST:-unknown} != unknown && ${CODE} -eq 99 ]]
+URI="https://nordvpn.com/wp-admin/admin-ajax.php?action=get_user_info_data"
+TEST=$(curl -fs "${URI}" | jq .status) || CODE=1
+if [[ "${TEST:-unknown}" != unknown && ${CODE} -eq 99 ]]
 then
     CODE=0
 else

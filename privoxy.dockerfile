@@ -1,13 +1,13 @@
-ARG ALPINE_VER=3.17.2
+ARG ALPINE_VER
 FROM alpine:${ALPINE_VER}
 ARG ALPINE_VER
+ARG PRIVOXY_VER
 LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
-LABEL org.opencontainers.image.description="Privoxy for Docker"
+LABEL org.opencontainers.image.description DESCRIPTION
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
-ARG PRIVOXY_VER=3.0.34
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Build privoxy
@@ -74,6 +74,6 @@ RUN chmod -R +x \
   /usr/local/bin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
-HEALTHCHECK --interval=1m \
+HEALTHCHECK --start-period=10s --timeout=3s \
   CMD /usr/local/bin/healthcheck
 CMD /usr/local/bin/start
