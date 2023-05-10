@@ -34,7 +34,7 @@ env:
   COSIGN_VER: 'v1.13.1'
   # Build args
   BUILD_ARGS: |
-    "ALPINE_VER=3.17.3"
+    "ALPINE_VER=3.18.0"
     "PRIVOXY_VER=3.0.34"
 
 jobs:
