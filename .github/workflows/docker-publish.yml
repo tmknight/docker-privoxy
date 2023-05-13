@@ -25,7 +25,7 @@ env:
   USER: tmknight88
   IMAGE: privoxy
   BUILD_ARGS: |
-    "ALPINE_VER=3.17.3"
+    "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"
 
 jobs:
