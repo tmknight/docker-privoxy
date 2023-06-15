@@ -29,7 +29,7 @@ RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
   ## Sourceforge stable
-  && curl -sLJO "https://sourceforge.net/projects/ijbswa/files/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz/download" \
+  && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/3.0.34%20%28stable%29/privoxy-3.0.34-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
   ## Git snapshot (2023-01-31)
   # && curl -sLJ -o privoxy-${PRIVOXY_VER}-stable-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=f496cc8ffc3f43f6b154a1f4261a38a9b21f7c16;sf=tgz" \
