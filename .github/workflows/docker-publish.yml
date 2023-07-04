@@ -11,7 +11,7 @@ on:
   release:
     types: [published]
   schedule:
-    - cron: '19 01 * * *'
+    - cron: '00 17 * * *'
   # push:
     # paths-ignore:
       # - '.github/**'
