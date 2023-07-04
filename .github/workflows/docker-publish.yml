@@ -26,6 +26,8 @@ env:
   REGISTRY: docker.io
   USER: tmknight88
   IMAGE: privoxy
+  # temp label version
+  ver: ''
   BUILD_ARGS: |
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"
@@ -79,7 +81,7 @@ jobs:
         name: Conditional(Set tag as called)
         run: |
           echo "tag=${{ steps.meta.outputs.tags }}" >> $GITHUB_ENV
-      
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
