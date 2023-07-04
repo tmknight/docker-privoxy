@@ -26,8 +26,6 @@ env:
   REGISTRY: docker.io
   USER: tmknight88
   IMAGE: privoxy
-  # temp label version
-  ver: ''
   BUILD_ARGS: |
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"
