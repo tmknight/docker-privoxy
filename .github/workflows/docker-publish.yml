@@ -20,6 +20,8 @@ on:
     # tags: [ 'v*.*.*' ]
 
 env:
+  ## Temp val
+  ver: ''
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   USER: tmknight88
@@ -67,12 +69,19 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE }}
 
-      - if: github.ref != 'release'
+      ## Set tag/label on schedule
+      - if: github.ref == 'schedule'
         name: Conditional(Set tag as `latest`)
         run: |
-          echo "tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV; \
+          echo "tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
           echo "ver=org.opencontainers.image.version=latest" >> $GITHUB_ENV
       
+      ## Set tag/label off schedule
+      - if: github.ref != 'schedule'
+        name: Conditional(Set tag as called)
+        run: |
+          echo "tag=${{ steps.meta.outputs.tags }}" >> $GITHUB_ENV
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
