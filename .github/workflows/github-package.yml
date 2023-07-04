@@ -34,8 +34,6 @@ env:
   IMAGE_NAME: tmknight/privoxy
   # cosign version
   COSIGN_VER: 'v1.13.1'
-  # temp label version
-  ver: ''
   # Build args
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
