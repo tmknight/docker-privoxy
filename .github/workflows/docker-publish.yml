@@ -11,7 +11,7 @@ on:
   release:
     types: [published]
   schedule:
-    - cron: '00 17 * * *'
+    - cron: '10 17 * * *'
   # push:
     # paths-ignore:
       # - '.github/**'
@@ -26,8 +26,6 @@ env:
   REGISTRY: docker.io
   USER: tmknight88
   IMAGE: privoxy
-  # temp label version
-  ver: ''
   BUILD_ARGS: |
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"
