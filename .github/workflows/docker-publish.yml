@@ -24,8 +24,8 @@ env:
   ver: ''
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
-  USER: tmknight88
   IMAGE: privoxy
+  IMAGE_NAME: tmknight88/privoxy
   BUILD_ARGS: |
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"
@@ -65,7 +65,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       ## Set tag/label on schedule
       - if: github.event_name == 'schedule'
