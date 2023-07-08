@@ -24,8 +24,6 @@ on:
     # tags: [ 'v*.*.*' ]
 
 env:
-  ## Temp val
-  ver: ''
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # name of image
@@ -93,17 +91,12 @@ jobs:
         run: |
           echo "tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
           echo "ver=org.opencontainers.image.version=latest" >> $GITHUB_ENV
-      
-      ## Set tag/label off schedule
-      - if: github.event_name != 'schedule'
-        name: Conditional(Set tag as called)
-        run: |
-          echo "tag=${{ steps.meta.outputs.tags }}" >> $GITHUB_ENV
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        id: build-and-push
+      - if: github.event_name == 'schedule'
+        name: Build and push Docker image on schedule
+        id: build-and-push-schedule
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -117,7 +110,20 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-
+      - if: github.event_name != 'schedule'
+        name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ${{ env.IMAGE }}.dockerfile
+          build-args: ${{ env.BUILD_ARGS }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
       # repository is public to avoid leaking data.  If you would like to publish
