@@ -94,24 +94,7 @@ jobs:
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
-      - if: github.event_name == 'schedule'
-        name: Build and push Docker image on schedule
-        id: build-and-push-schedule
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ${{ env.IMAGE }}.dockerfile
-          build-args: ${{ env.BUILD_ARGS }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.tag }}
-          labels: |
-            ${{ steps.meta.outputs.labels }}
-            ${{ env.ver }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - if: github.event_name != 'schedule'
-        name: Build and push Docker image
+      - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
@@ -135,17 +118,7 @@ jobs:
           KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
         run: 'echo "$KEY" > cosign.key'
 
-      - if: github.event_name == 'schedule'
-        name: Sign the published Docker image on schedule
-        env:
-          COSIGN_EXPERIMENTAL: "false"
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-        ## This step uses the identity token to provision an ephemeral certificate
-        ## against the sigstore community Fulcio instance.
-        run: echo "${{ env.tag }}" | xargs -I {} cosign sign --key cosign.key {}@${{ steps.build-and-push.outputs.digest }}
-
-      - if: github.event_name != 'schedule' && github.event_name != 'pull_request'
-        name: Sign the published Docker image
+      - name: Sign the published Docker image
         env:
           COSIGN_EXPERIMENTAL: "false"
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
