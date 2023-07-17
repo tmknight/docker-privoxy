@@ -19,7 +19,7 @@ on:
       - '.*'
       - '.LICENSE'
       - 'examples'
-    branches: [ "develop", "main" ]
+    branches: [ "dev/ubuntu", "develop", "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
