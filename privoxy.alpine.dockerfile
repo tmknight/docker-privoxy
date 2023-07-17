@@ -25,10 +25,11 @@ RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   zlib \
   zlib-dev \
   util-linux-misc \
+  ## ensure privoxy directories
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
-  ## Sourceforge stable
+  ## From stable source
   && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
   ## Git snapshot (2023-01-31)
