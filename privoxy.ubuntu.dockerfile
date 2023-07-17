@@ -22,13 +22,12 @@ RUN apt-get update -qq \
   curl \
   jq \
   openssl \
-  openssl-dev \
-  pcre \
-  pcre-dev \
+  libssl-dev \
+  libpcre3-dev \
   privoxy \
+  rename \
   tzdata \
-  zlib \
-  zlib-dev \
+  zlib1g-dev \
   ## ensure privoxy directories
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
@@ -53,15 +52,15 @@ RUN apt-get update -qq \
   --with-openssl \
   --enable-extended-statistics \
   && make \
-  && make -s install \
+  && make -s install USER=privoxy GROUP=nogroup \
   && cd / \
-  && chown -R privoxy:privoxy /var/log/privoxy \
+  && chown -R privoxy:nogroup /var/log/privoxy \
   ## we want just the user-manual
   && mv /usr/share/doc/privoxy/user-manual/ /tmp/ \
   && rm -rf /usr/share/doc/privoxy/* \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## rename config files
-  && rename -a '.new' '' /etc/privoxy/*.new \
+  && rename 's/.new//' /etc/privoxy/*.new \
   ## cleanup
   ## remove unnecessary packages
   && apt-get remove -qq -y \
@@ -69,9 +68,10 @@ RUN apt-get update -qq \
   autoconf \
   automake \
   build-essential \
-  openssl-dev \
-  pcre-dev \
-  zlib-dev \
+  libssl-dev \
+  libpcre3-dev \
+  rename \
+  zlib1g-dev \
   && apt-get autoremove -y -qq \
   && apt-get clean -y -qq \
   ## remove temp files
