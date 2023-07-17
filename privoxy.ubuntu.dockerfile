@@ -15,6 +15,8 @@ RUN apt-get update -qq \
   && apt-get dist-upgrade -qq -y \
   && apt-get install --no-install-recommends -qq -y \
   apt-utils \
+  autoconf \
+  automake \
   build-essential \
   ca-certificates \
   curl \
@@ -64,6 +66,8 @@ RUN apt-get update -qq \
   ## remove unnecessary packages
   && apt-get remove -qq -y \
   apt-utils \
+  autoconf \
+  automake \
   build-essential \
   openssl-dev \
   pcre-dev \
