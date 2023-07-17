@@ -8,6 +8,8 @@ name: GitHub Ubuntu Package
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '10 05 * * *'
   release:
     types: [published]
   push:
