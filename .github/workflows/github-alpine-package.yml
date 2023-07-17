@@ -33,6 +33,7 @@ env:
   # cosign version
   COSIGN_VER: 'v1.13.1'
   # Build args
+  DISTRO: 'alpine'
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
@@ -99,7 +100,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ${{ env.IMAGE }}.dockerfile
+          file: ${{ env.IMAGE }}.${{ env.DISTRO }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
