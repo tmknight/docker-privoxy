@@ -31,7 +31,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: tmknight/privoxy
   # cosign version
-  COSIGN_VER: 'v1.13.1'
+  COSIGN_VER: 'v2.1.1'
   # Build args
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
@@ -52,6 +52,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=schedule,value=latest
+            type=ref,event=branch
+            type=ref,event=tag
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -77,18 +89,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=schedule,value=latest
-            type=ref,event=branch
-            type=ref,event=tag
-
       ## Set tag/label on schedule
       # - if: github.event_name == 'schedule'
       #   name: Conditional(Set tag as `latest`)
@@ -110,22 +110,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
+
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
       # repository is public to avoid leaking data.  If you would like to publish
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
-      - name: Write signing key to disk
-        shell: bash
-        env:
-          KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-        run: 'echo "$KEY" > cosign.key'
-
       - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
         env:
-          COSIGN_EXPERIMENTAL: "false"
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-        ## This step uses the identity token to provision an ephemeral certificate
-        ## against the sigstore community Fulcio instance.
-        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign --key cosign.key {}@${{ steps.build-and-push.outputs.digest }}
+          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
