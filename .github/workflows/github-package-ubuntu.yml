@@ -86,8 +86,8 @@ jobs:
             type=ref,event=tag
             type=raw,enable=${{ github.event_name == 'schedule' }},value=latest
             type=raw,enable=${{ github.event_name == 'schedule' }},value=dev-ubuntu
-            type=raw,enable=${{ github.event_name == 'workflow_dispatch' }},value=latest
-            type=raw,enable=${{ github.event_name == 'workflow_dispatch' }},value=dev-ubuntu
+          # type=raw,enable=${{ github.event_name == 'workflow_dispatch' }},value=latest
+          # type=raw,enable=${{ github.event_name == 'workflow_dispatch' }},value=dev-ubuntu
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
