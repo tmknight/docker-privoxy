@@ -1,5 +1,5 @@
 # for Privoxy
-name: GitHub Package
+name: GitHub Package Ubuntu
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -9,19 +9,17 @@ name: GitHub Package
 on:
   workflow_dispatch:
   schedule:
-    - cron: '01 05 * * *'
+    - cron: '10 05 * * *'
   release:
     types: [published]
   push:
+    branches: [ "dev-ubuntu" ]
     paths-ignore:
       - '.github/**'
       - '*.md'
       - '.*'
       - '.LICENSE'
       - 'examples'
-    branches: [ "dev/ubuntu", "develop", "main" ]
-    # Publish semver tags as releases.
-    # tags: [ 'v*.*.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -31,13 +29,12 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: tmknight/privoxy
   # cosign version
-  COSIGN_VER: 'v1.13.1'
+  COSIGN_VER: 'v2.1.1'
   # Build args
   DISTRO: 'ubuntu'
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
-#    "UBUNTU_VER=22.04"
 
 jobs:
   build:
@@ -53,15 +50,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: dev/ubuntu
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        ## uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
-        uses: sigstore/cosign-installer@v3
+        uses: sigstore/cosign-installer@v3 #v3.1.1
         with:
-          ## cosign-release: 'v1.11.0'
           cosign-release: ${{ env.COSIGN_VER }}
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
@@ -85,13 +82,11 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      ## Set tag/label on schedule
-      - if: github.event_name == 'schedule'
-        name: Conditional(Set tag as `latest`)
-        run: |
-          echo "tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
-          echo "ver=org.opencontainers.image.version=latest" >> $GITHUB_ENV
+          tags: |
+            type=ref,event=branch,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=ref,event=tag
+            type=schedule,pattern=nightly
+            type=raw,enable=${{ github.event_name == 'schedule' }},value=dev-ubuntu
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -107,22 +102,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
+
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
       # repository is public to avoid leaking data.  If you would like to publish
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
-      - name: Write signing key to disk
-        shell: bash
-        env:
-          KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-        run: 'echo "$KEY" > cosign.key'
-
       - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
         env:
-          COSIGN_EXPERIMENTAL: "false"
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-        ## This step uses the identity token to provision an ephemeral certificate
-        ## against the sigstore community Fulcio instance.
-        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign --key cosign.key {}@${{ steps.build-and-push.outputs.digest }}
+          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
