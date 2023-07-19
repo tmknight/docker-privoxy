@@ -24,6 +24,7 @@ env:
   REGISTRY: docker.io
   IMAGE: privoxy
   IMAGE_NAME: tmknight88/privoxy
+  DISTRO: 'alpine'
   BUILD_ARGS: |
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"
@@ -77,7 +78,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ${{ env.IMAGE }}.dockerfile
+          file: ${{ env.IMAGE }}.${{ env.DISTRO }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -93,7 +94,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ${{ env.IMAGE }}.dockerfile
+          file: ${{ env.IMAGE }}.${{ env.DISTRO }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
