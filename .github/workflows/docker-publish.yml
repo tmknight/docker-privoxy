@@ -64,12 +64,15 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=raw,enable=${{ github.event_name == 'schedule' }},value=latest
 
       ## Set tag/label on schedule
       - if: github.event_name == 'schedule'
         name: Conditional(Set tag as `latest`)
         run: |
-          echo "tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_ENV
           echo "ver=org.opencontainers.image.version=latest" >> $GITHUB_ENV
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -83,7 +86,7 @@ jobs:
           file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.tag }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: |
             ${{ steps.meta.outputs.labels }}
             ${{ env.ver }}
@@ -103,4 +106,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  

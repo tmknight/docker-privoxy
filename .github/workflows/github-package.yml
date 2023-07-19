@@ -88,7 +88,6 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=raw,enable=${{ github.event_name == 'schedule' }},value=latest
-            type=raw,enable=${{ github.event_name == 'schedule' }},value={{branch}}
 
       ## Set tag/label on schedule
       # - if: github.event_name == 'schedule'
