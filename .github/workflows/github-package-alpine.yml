@@ -13,13 +13,13 @@ on:
   release:
     types: [published]
   push:
+    branches: [ "develop", "main" ]
     paths-ignore:
       - '.github/**'
       - '*.md'
       - '.*'
       - '.LICENSE'
       - 'examples'
-    branches: [ "develop", "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
