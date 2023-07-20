@@ -88,7 +88,7 @@ jobs:
           tags: |
             type=ref,event=branch,enable=${{ github.event_name != 'schedule' }}
             type=ref,event=tag
-            type=schedule,pattern=nightly
+            type=raw,enable=${{ github.event_name == 'schedule' }},value=latest
             type=raw,enable=true,value=dev-${{ env.DISTRO }}
 
       # Build and push Docker image with Buildx (don't push on PR)
