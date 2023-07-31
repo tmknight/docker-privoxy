@@ -10,6 +10,9 @@ LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
+## Ensure alpine updated
+RUN apk update \
+  && apk upgrade --no-cache --no-progress
 ## Build privoxy
 RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   alpine-sdk \
