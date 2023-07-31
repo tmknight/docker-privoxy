@@ -11,7 +11,7 @@ A companion project leveraging [Docker NordVPN](https://github.com/tmknight/dock
 
 Build based on
 
-- Alpine `3.18.2`
+- Alpine `latest` stable
   - Updated nighty
 - [Privoxy](https://www.privoxy.org/) `3.0.34`
   - Built from [source](https://www.privoxy.org/gitweb/?p=privoxy.git;a=summary)
