@@ -10,8 +10,11 @@ LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
+## Ensure alpine updated
+RUN apk update \
+  && apk upgrade --no-cache --no-progress --purge
 ## Build privoxy
-RUN apk add --update --upgrade --no-cache --no-progress --quiet \
+RUN apk add --update --upgrade --no-cache --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   curl \
@@ -25,11 +28,10 @@ RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   zlib \
   zlib-dev \
   util-linux-misc \
-  ## ensure privoxy directories
   && mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
-  ## From stable source
+  ## Sourceforge stable
   && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
   ## Git snapshot (2023-01-31)
@@ -59,7 +61,7 @@ RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   && rename -a '.new' '' /etc/privoxy/*.new \
   ## cleanup
   ## remove unnecessary packages
-  && apk del --no-progress --quiet \
+  && apk del --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   openssl-dev \
