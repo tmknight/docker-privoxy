@@ -12,9 +12,9 @@ ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
 ## Ensure alpine updated
 RUN apk update \
-  && apk upgrade --no-cache --no-progress
+  && apk upgrade --no-cache --no-progress --purge
 ## Build privoxy
-RUN apk add --update --upgrade --no-cache --no-progress --quiet \
+RUN apk add --update --upgrade --no-cache --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   curl \
@@ -61,7 +61,7 @@ RUN apk add --update --upgrade --no-cache --no-progress --quiet \
   && rename -a '.new' '' /etc/privoxy/*.new \
   ## cleanup
   ## remove unnecessary packages
-  && apk del --no-progress --quiet \
+  && apk del --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   openssl-dev \
