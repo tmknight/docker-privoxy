@@ -27,11 +27,12 @@ RUN apt-get update -qq \
   privoxy \
   rename \
   tzdata \
-  zlib1g-dev \
-  ## ensure privoxy directories
-  && mkdir -p /etc/privoxy \
+  zlib1g-dev
+## Build privoxy
+RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
+  ## Begin source decision
   ## From stable source
   && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
@@ -60,10 +61,10 @@ RUN apt-get update -qq \
   && rm -rf /usr/share/doc/privoxy/* \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## rename config files
-  && rename 's/.new//' /etc/privoxy/*.new \
-  ## cleanup
-  ## remove unnecessary packages
-  && apt-get remove -qq -y \
+  && rename 's/.new//' /etc/privoxy/*.new
+## cleanup
+## remove unnecessary packages & temp files
+RUN apt-get remove -qq -y \
   apt-utils \
   autoconf \
   automake \
@@ -74,7 +75,6 @@ RUN apt-get update -qq \
   zlib1g-dev \
   && apt-get autoremove -y -qq \
   && apt-get clean -y -qq \
-  ## remove temp files
   && rm -rf \
   /tmp/* \
   /var/cache/apt/archives/* \
