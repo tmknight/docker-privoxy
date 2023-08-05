@@ -10,11 +10,18 @@ LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-## Ensure alpine updated
+COPY ./scripts/ /usr/local/bin/
+RUN chmod -R +x \
+  /usr/local/bin/
+EXPOSE 8118
+VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
+HEALTHCHECK --start-period=10s --timeout=3s \
+  CMD /usr/local/bin/healthcheck
+CMD /usr/local/bin/start
+## Ensure alpine updated & add required packages for privoxy
 RUN apk update \
-  && apk upgrade --no-cache --no-progress --purge
-## Build privoxy
-RUN apk add --update --upgrade --no-cache --no-progress --purge --quiet \
+  && apk upgrade --no-cache --no-progress --purge \
+  && apk add --update --upgrade --no-cache --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   curl \
@@ -27,10 +34,12 @@ RUN apk add --update --upgrade --no-cache --no-progress --purge --quiet \
   tzdata \
   zlib \
   zlib-dev \
-  util-linux-misc \
-  && mkdir -p /etc/privoxy \
+  util-linux-misc
+## Build privoxy
+RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
+  ## Begin source decision
   ## Sourceforge stable
   && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
@@ -58,25 +67,15 @@ RUN apk add --update --upgrade --no-cache --no-progress --purge --quiet \
   && rm -rf /usr/share/doc/privoxy/* \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## rename config files
-  && rename -a '.new' '' /etc/privoxy/*.new \
-  ## cleanup
-  ## remove unnecessary packages
-  && apk del --no-progress --purge --quiet \
+  && rename -a '.new' '' /etc/privoxy/*.new
+## cleanup; remove unnecessary packages & temp files
+RUN apk del --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   openssl-dev \
   pcre-dev \
   zlib-dev \
   util-linux-misc \
-  ## remove temp files
   && rm -rf \
   /tmp/* \
   /var/tmp/*
-COPY ./scripts/ /usr/local/bin/
-RUN chmod -R +x \
-  /usr/local/bin/
-EXPOSE 8118
-VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
-HEALTHCHECK --start-period=10s --timeout=3s \
-  CMD /usr/local/bin/healthcheck
-CMD /usr/local/bin/start
