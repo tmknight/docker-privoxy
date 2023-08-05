@@ -10,6 +10,14 @@ LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
+COPY ./scripts/ /usr/local/bin/
+RUN chmod -R +x \
+  /usr/local/bin/
+EXPOSE 8118
+VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
+HEALTHCHECK --start-period=10s --timeout=3s \
+  CMD /usr/local/bin/healthcheck
+CMD /usr/local/bin/start
 ## Ensure alpine updated & add required packages for privoxy
 RUN apk update \
   && apk upgrade --no-cache --no-progress --purge \
@@ -71,11 +79,3 @@ RUN apk del --no-progress --purge --quiet \
   && rm -rf \
   /tmp/* \
   /var/tmp/*
-COPY ./scripts/ /usr/local/bin/
-RUN chmod -R +x \
-  /usr/local/bin/
-EXPOSE 8118
-VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
-HEALTHCHECK --start-period=10s --timeout=3s \
-  CMD /usr/local/bin/healthcheck
-CMD /usr/local/bin/start
