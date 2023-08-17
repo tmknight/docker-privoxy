@@ -68,9 +68,9 @@ RUN mkdir -p /etc/privoxy \
   && rm -rf /usr/share/doc/privoxy/* \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## rename config files
-  && rename -a '.new' '' /etc/privoxy/*.new
-## cleanup; remove unnecessary packages & temp files
-RUN apk del --no-progress --purge --quiet \
+  && rename -a '.new' '' /etc/privoxy/*.new \
+  ## cleanup; remove unnecessary packages & temp files
+  && apk del --no-progress --purge --quiet \
   alpine-sdk \
   autoconf \
   openssl-dev \
