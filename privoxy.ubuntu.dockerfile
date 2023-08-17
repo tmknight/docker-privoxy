@@ -71,10 +71,10 @@ RUN mkdir -p /etc/privoxy \
   && rm -rf /usr/share/doc/privoxy/* \
   && mv /tmp/user-manual/ /usr/share/doc/privoxy/ \
   ## rename config files
-  && rename 's/.new//' /etc/privoxy/*.new
-## cleanup
-## remove unnecessary packages & temp files
-RUN apt-get remove -qq -y \
+  && rename 's/.new//' /etc/privoxy/*.new \
+  ## cleanup
+  ## remove unnecessary packages & temp files
+  && apt-get remove -qq -y \
   apt-utils \
   autoconf \
   automake \
