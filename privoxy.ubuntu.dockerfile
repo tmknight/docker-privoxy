@@ -10,14 +10,15 @@ LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
   PIDFILE=/var/run/privoxy.pid
-COPY ./scripts/ /usr/local/bin/
-RUN chmod -R +x \
-  /usr/local/bin/
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --start-period=10s --timeout=3s \
   CMD /usr/local/bin/healthcheck
 CMD /usr/local/bin/start
+## Core scripts
+COPY ./scripts/ /usr/local/bin/
+RUN chmod -R +x \
+  /usr/local/bin/
 ## Begin setup
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -qq \
