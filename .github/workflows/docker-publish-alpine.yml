@@ -24,8 +24,8 @@ env:
   REGISTRY: docker.io
   IMAGE: privoxy
   IMAGE_NAME: tmknight88/privoxy
-  DISTRO: 'alpine'
-  RELEASE: "stable"
+  DISTRO: alpine
+  RELEASE: stable
   BUILD_ARGS: |
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
     "PRIVOXY_VER=3.0.34"

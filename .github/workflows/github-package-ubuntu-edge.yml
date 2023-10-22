@@ -31,8 +31,8 @@ env:
   # cosign version
   COSIGN_VER: 'v2.1.1'
   # Build args
-  DISTRO: 'ubuntu'
-  RELEASE: "edge"
+  DISTRO: ubuntu
+  RELEASE: edge
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
