@@ -12,11 +12,11 @@ on:
     types: [published]
   schedule:
     - cron: '20 05 * * *'
-  push:
-    paths-ignore:
-      - '.github/**'
-      - .gitignore
-    branches: [ "main" ]
+  # push:
+  #   paths-ignore:
+  #     - '.github/**'
+  #     - .gitignore
+  #   branches: [ "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
