@@ -8,18 +8,18 @@ name: GitHub Package Ubuntu
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '20 05 * * *'
-  # release:
-  #   types: [published]
-  # push:
-  #   branches: [ "develop", "main" ]
-  #   paths-ignore:
-  #     - '.github/**'
-  #     - '*.md'
-  #     - '.*'
-  #     - '.LICENSE'
-  #     - 'examples'
+  schedule:
+    - cron: '20 05 * * *'
+  release:
+    types: [published]
+  push:
+    branches: [ "develop", "main" ]
+    paths-ignore:
+      - '.github/**'
+      - '*.md'
+      - '.*'
+      - '.LICENSE'
+      - 'examples'
 
 env:
   # Use docker.io for Docker Hub if empty

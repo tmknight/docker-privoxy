@@ -8,14 +8,14 @@ name: Docker Publish Alpine
 
 on:
   workflow_dispatch:
-  # release:
-  #   types: [published]
-  # schedule:
-  #   - cron: '10 05 * * *'
-  # push:
-    # paths-ignore:
-      # - '.github/**'
-    # branches: [ "main" ]
+  release:
+    types: [published]
+  schedule:
+    - cron: '20 05 * * *'
+  push:
+    paths-ignore:
+      - '.github/**'
+    branches: [ "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
