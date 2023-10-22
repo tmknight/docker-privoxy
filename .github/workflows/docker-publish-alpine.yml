@@ -45,9 +45,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        ## Change to dev/multi-OS branch
-        with:
-          ref: dev/multi-OS
 
       # Setup QEMU for multi-arch
       - name: Set up QEMU
