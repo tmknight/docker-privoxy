@@ -34,6 +34,7 @@ env:
   COSIGN_VER: 'v2.1.1'
   # Build args
   DISTRO: 'alpine'
+  RELEASE: "stable"
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
@@ -103,9 +104,9 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./docker/alpine/${{ RELEASE }}
           platforms: linux/amd64,linux/arm64
-          file: ${{ env.IMAGE }}.${{ env.DISTRO }}.dockerfile
+          file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
