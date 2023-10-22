@@ -105,7 +105,7 @@ jobs:
         with:
           context: ${{ env.CONTEXT }}/${{ env.DISTRO }}/${{ env.RELEASE }}
           platforms: linux/amd64,linux/arm64
-          file: ${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
+          file: docker/${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
