@@ -78,6 +78,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=tag
+            type=raw,enable=true,value=${{ env.RELEASE }}
             type=raw,enable=${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }},value=latest
 
       # Build and push Docker image with Buildx (don't push on PR)
