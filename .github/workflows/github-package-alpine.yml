@@ -8,19 +8,19 @@ name: GitHub Package Alpine
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '00 05 * * *'
-  release:
-    types: [published]
-  push:
-    branches: [ "develop", "main" ]
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
-      - '.*'
-      - '.LICENSE'
-      - 'examples'
-    # Publish semver tags as releases.
+  # schedule:
+  #   - cron: '00 05 * * *'
+  # release:
+  #   types: [published]
+  # push:
+  #   branches: [ "develop", "main" ]
+  #   paths-ignore:
+  #     - '.github/**'
+  #     - '*.md'
+  #     - '.*'
+  #     - '.LICENSE'
+  #     - 'examples'
+  #   # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
 env:
@@ -33,8 +33,8 @@ env:
   # cosign version
   COSIGN_VER: 'v2.1.1'
   # Build args
-  DISTRO: 'alpine'
-  RELEASE: "stable"
+  DISTRO: alpine
+  RELEASE: stable
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
@@ -105,7 +105,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: ./docker/alpine/${{ RELEASE }}
+          context: ./docker/alpine/${{ env.RELEASE }}
           platforms: linux/amd64,linux/arm64
           file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}

@@ -8,18 +8,18 @@ name: GitHub Package Ubuntu Edge
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '20 05 * * *'
-  release:
-    types: [published]
-  push:
-    branches: [ "develop", "main" ]
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
-      - '.*'
-      - '.LICENSE'
-      - 'examples'
+  # schedule:
+  #   - cron: '20 05 * * *'
+  # release:
+  #   types: [published]
+  # push:
+  #   branches: [ "develop", "main" ]
+  #   paths-ignore:
+  #     - '.github/**'
+  #     - '*.md'
+  #     - '.*'
+  #     - '.LICENSE'
+  #     - 'examples'
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -31,8 +31,8 @@ env:
   # cosign version
   COSIGN_VER: 'v2.1.1'
   # Build args
-  DISTRO: 'ubuntu'
-  RELEASE: "edge"
+  DISTRO: ubuntu
+  RELEASE: edge
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
@@ -102,7 +102,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: ./docker/ubuntu/${{ RELEASE }}
+          context: ./docker/ubuntu/${{ env.RELEASE }}
           platforms: linux/amd64,linux/arm64
           file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
