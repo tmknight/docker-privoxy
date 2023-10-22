@@ -15,6 +15,7 @@ on:
   push:
     paths-ignore:
       - '.github/**'
+      - .gitignore
     branches: [ "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
