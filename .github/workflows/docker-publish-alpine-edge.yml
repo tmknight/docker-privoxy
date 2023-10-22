@@ -1,5 +1,5 @@
 # for NordVPN
-name: Docker Publish Alpine
+name: Docker Publish Alpine Edge
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
