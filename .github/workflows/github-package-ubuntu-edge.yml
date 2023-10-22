@@ -35,7 +35,7 @@ env:
   DISTRO: ubuntu
   RELEASE: edge
   BUILD_ARGS: |
-    "PRIVOXY_VER=3.0.34"
+    "PRIVOXY_VER=3.0.35"
     "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
 
 jobs:

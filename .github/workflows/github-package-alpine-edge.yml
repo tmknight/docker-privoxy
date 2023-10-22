@@ -37,7 +37,7 @@ env:
   DISTRO: alpine
   RELEASE: edge
   BUILD_ARGS: |
-    "PRIVOXY_VER=3.0.34"
+    "PRIVOXY_VER=3.0.35"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
 
 jobs:
