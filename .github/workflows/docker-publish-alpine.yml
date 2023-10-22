@@ -80,6 +80,7 @@ jobs:
             type=ref,event=tag
             type=raw,enable=${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }},value=latest
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
+            type=raw,enable=true,value=${{ env.DISTRO }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
