@@ -1,5 +1,5 @@
 # for NordVPN
-name: Docker Publish Alpine
+name: Docker Publish Ubuntu
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -26,11 +26,12 @@ env:
   IMAGE: privoxy
   IMAGE_NAME: tmknight88/privoxy
   CONTEXT: .
-  DISTRO: alpine
-  RELEASE: stable
+  DISTRO: ubuntu
+  RELEASE: edge
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
-    "ALPINE_VER=${{ vars.ALPINE_VER }}"
+    "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
+
 jobs:
   build:
 
@@ -75,7 +76,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=tag
-            type=raw,enable=${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }},value=latest
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
             type=raw,enable=true,value=${{ env.DISTRO }}
 

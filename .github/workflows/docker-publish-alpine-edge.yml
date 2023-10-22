@@ -27,7 +27,7 @@ env:
   IMAGE_NAME: tmknight88/privoxy
   CONTEXT: .
   DISTRO: alpine
-  RELEASE: stable
+  RELEASE: edge
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
