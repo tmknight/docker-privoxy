@@ -8,19 +8,19 @@ name: GitHub Package Alpine
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '00 05 * * *'
-  release:
-    types: [published]
-  push:
-    branches: [ "develop", "main" ]
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
-      - '.*'
-      - '.LICENSE'
-      - 'examples'
-    # Publish semver tags as releases.
+  # schedule:
+  #   - cron: '00 05 * * *'
+  # release:
+  #   types: [published]
+  # push:
+  #   branches: [ "develop", "main" ]
+  #   paths-ignore:
+  #     - '.github/**'
+  #     - '*.md'
+  #     - '.*'
+  #     - '.LICENSE'
+  #     - 'examples'
+  #   # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
 env:
