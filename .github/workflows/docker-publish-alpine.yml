@@ -8,14 +8,14 @@ name: Docker Publish Alpine
 
 on:
   workflow_dispatch:
-  # release:
-  #   types: [published]
-  # schedule:
-  #   - cron: '10 05 * * *'
-  # push:
-    # paths-ignore:
-      # - '.github/**'
-    # branches: [ "main" ]
+  release:
+    types: [published]
+  schedule:
+    - cron: '20 05 * * *'
+  push:
+    paths-ignore:
+      - '.github/**'
+    branches: [ "main" ]
     # Publish semver tags as releases.
     # tags: [ 'v*.*.*' ]
 
@@ -45,9 +45,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        ## Change to dev/multi-OS branch
-        with:
-          ref: dev/multi-OS
 
       # Setup QEMU for multi-arch
       - name: Set up QEMU
@@ -79,6 +76,8 @@ jobs:
           tags: |
             type=ref,event=tag
             type=raw,enable=${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }},value=latest
+            type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
+            type=raw,enable=true,value=${{ env.DISTRO }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action

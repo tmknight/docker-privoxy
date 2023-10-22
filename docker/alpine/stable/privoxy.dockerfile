@@ -45,7 +45,7 @@ RUN mkdir -p /etc/privoxy \
   && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz" \
   && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
   ## Git snapshot (2023-01-31)
-  # && curl -sLJ -o privoxy-${PRIVOXY_VER}-stable-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=f496cc8ffc3f43f6b154a1f4261a38a9b21f7c16;sf=tgz" \
+  # && curl -sLJ -o privoxy-${PRIVOXY_VER}-stable-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=HEAD;sf=tgz" \
   # && mkdir ./privoxy-${PRIVOXY_VER}-stable \
   # && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz -C ./privoxy-${PRIVOXY_VER}-stable --strip-components=1 \
   ## End source decision
