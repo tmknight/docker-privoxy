@@ -33,9 +33,9 @@ env:
   # cosign version
   COSIGN_VER: "v2.1.1"
   # Build args
+  CONTEXT: docker
   DISTRO: alpine
   RELEASE: edge
-  CONTEXT: docker
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
