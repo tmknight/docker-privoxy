@@ -24,6 +24,7 @@ env:
   REGISTRY: docker.io
   IMAGE: privoxy
   IMAGE_NAME: tmknight88/privoxy
+  CONTEXT: docker
   DISTRO: alpine
   RELEASE: stable
   BUILD_ARGS: |
@@ -85,7 +86,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: ./docker/alpine/${{ env.RELEASE }}
+          context: ${{ env.CONTEXT }}/${{ env.DISTRO }}/${{ env.RELEASE }}
           platforms: linux/amd64,linux/arm64
           file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
