@@ -104,7 +104,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: ${{ env.CONTEXT }}/${{ env.DISTRO }}/${{ env.RELEASE }}
+          context: ${{ env.CONTEXT }}
           platforms: linux/amd64,linux/arm64
           file: docker/${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
