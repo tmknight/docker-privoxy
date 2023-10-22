@@ -31,6 +31,7 @@ env:
   # cosign version
   COSIGN_VER: 'v2.1.1'
   # Build args
+  CONTEXT: docker
   DISTRO: ubuntu
   RELEASE: edge
   BUILD_ARGS: |
@@ -102,7 +103,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: ./docker/ubuntu/${{ env.RELEASE }}
+          context: ${{ env.CONTEXT }}/${{ env.DISTRO }}/${{ env.RELEASE }}
           platforms: linux/amd64,linux/arm64
           file: ${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
