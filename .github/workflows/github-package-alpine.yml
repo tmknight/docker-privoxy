@@ -54,8 +54,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        ## Change to dev/multi-OS branch
         with:
-          ref: dev/ubuntu
+          ref: dev/multi-OS
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
