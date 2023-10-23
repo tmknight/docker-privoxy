@@ -9,7 +9,7 @@ name: GitHub Package Alpine
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 05 * * *'
+    - cron: '15 05 * * *'
   release:
     types: [published]
   push:
@@ -40,7 +40,6 @@ env:
   BUILD_ARGS: |
     "PRIVOXY_VER=3.0.34"
     "ALPINE_VER=${{ vars.ALPINE_VER }}"
-#    "ALPINE_VER=3.18.0"
 
 jobs:
   build:
