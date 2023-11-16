@@ -14,9 +14,9 @@ A companion project leveraging [Docker NordVPN](https://github.com/tmknight/dock
 Build based on
 
 - Alpine `latest` stable
-  - Updated nighty
+  - Updated nightly
 - Ubuntu `22.04`
-  - Updated nighty
+  - Updated nightly
 - [Privoxy](https://www.privoxy.org/)
   - Stable `3.0.34`
   - Edge `3.0.35`
