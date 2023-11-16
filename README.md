@@ -15,7 +15,7 @@ Build based on
 
 - Alpine `latest` stable
   - Updated nightly
-- Ubuntu `22.04`
+- Ubuntu `latest`
   - Updated nightly
 - [Privoxy](https://www.privoxy.org/)
   - Stable `3.0.34`
