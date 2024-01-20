@@ -1,43 +1,48 @@
-name: "Publish Docker Images"
+name: "Publish Docker Images via Template"
 
 permissions:
   contents: read
+  id-token: write
+  packages: write
 
 on:
   workflow_dispatch:
   schedule:
     - cron: '00 05 * * *'
+  release:
+    types: published
 
 jobs:
-    ## Github Package
-    github-ubuntu-edge:
-        uses: ./.github/workflows/github-package-ubuntu-edge.yml
+  ## Ubuntu
+  ubuntu-edge:
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: edge
+    secrets: inherit
 
-    github-ubuntu-stable:
-        needs: github-ubuntu-edge
-        uses: ./.github/workflows/github-package-ubuntu.yml
+  ubuntu-stable:
+    needs: ubuntu-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: stable
+    secrets: inherit
 
-    github-alpine-edge:
-        needs: github-ubuntu-stable
-        uses: ./.github/workflows/github-package-alpine-edge.yml
+  ## Alpine
+  alpine-edge:
+    needs: ubuntu-stable
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: alpine
+      release: edge
+    secrets: inherit
 
-    github-alpine-stable:
-        needs: github-alpine-edge
-        uses: ./.github/workflows/github-package-alpine.yml
-
-    ## Docker Hub
-    docker-ubuntu-edge:
-        needs: github-alpine-stable
-        uses: ./.github/workflows/docker-publish-ubuntu-edge.yml
-
-    docker-ubuntu-stable:
-        needs: docker-ubuntu-edge
-        uses: ./.github/workflows/docker-publish-ubuntu.yml
-
-    docker-alpine-edge:
-        needs: docker-ubuntu-stable
-        uses: ./.github/workflows/docker-publish-alpine-edge.yml
-
-    docker-alpine-stable:
-        needs: docker-alpine-edge
-        uses: ./.github/workflows/docker-publish-alpine.yml
+  alpine-stable:
+    needs: alpine-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: alpine
+      release: stable
+      latest: true
+    secrets: inherit
