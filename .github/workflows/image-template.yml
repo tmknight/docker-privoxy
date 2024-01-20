@@ -56,30 +56,38 @@ on:
 
 env:
   REGISTRY: ${{ github.event.inputs.registry }}
-  USERNAME: |
-    if: ${{ github.event.inputs.registry == 'ghcr.io' }} ${{ github.actor }}
-    if: ${{ github.event.inputs.registry == 'docker.io' }} ${{ secrets.DOCKERHUB_USERNAME }}
-  PASSWORD: |
-    if: ${{ github.event.inputs.registry == 'ghcr.io' }} ${{ secrets.GITHUB_TOKEN }}
-    if: ${{ github.event.inputs.registry == 'docker.io' }} ${{ secrets.DOCKERHUB_TOKEN }}
   # name of image
   IMAGE: privoxy
   # repository as <account>/<repo>
   IMAGE_NAME: ${{ github.event.inputs.username }}/privoxy
-  # Build args
   CONTEXT: .
   DISTRO: ${{ github.event.inputs.distro }}
   RELEASE: ${{ github.event.inputs.release }}
-  BUILD_ARGS: |
-    if: ${{ github.event.inputs.distro == 'alpine' }} "ALPINE_VER=${{ vars.ALPINE_VER }}"
-    if: ${{ github.event.inputs.distro == 'ubuntu' }} "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
-    if: ${{ github.event.inputs.release == 'stable' }} "PRIVOXY_VER=3.0.34"
-    if: ${{ github.event.inputs.release == 'edge' }} "PRIVOXY_VER=3.0.35"
 
 jobs:
-  build:
+  set-buildargs:
+    name: "Set build arguments"
+    runs-on: "ubuntu-latest"
+    outputs:
+      build-args: ${{ steps.set-buildargs.outputs.BUILD_ARGS }}
 
+    steps:
+      - name: "Get version"
+        id: "set-buildargs"
+        env:
+          DISTRO: ${{ github.event.inputs.distro }}
+          RELEASE: ${{ github.event.inputs.release }}
+          ALPINE_VER: ${{ vars.ALPINE_VER }}
+          UBUNTU_VER: ${{ vars.UBUNTU_VER }}
+        shell: "bash"
+        run: |
+          DISTRO_VERSION=$([ "${DISTRO}" == "alpine" ] && "ALPINE_VER=${ALPINE_VER} || "UBUNTU_VER=${UBUNTU_VER}")
+          PRIVOXY_VER=$([ "${RELEASE}" == "stable" ] && "3.0.34" || "3.0.34")
+          echo BUILD_ARGS=(${DISTRO_VERSION} ${PRIVOXY_VER}) >> $GITHUB_OUTPUT
+
+  build:
     runs-on: ubuntu-latest
+    needs: set-buildargs
     permissions:
       contents: read
       packages: write
@@ -103,13 +111,24 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
+      ## Github Registry
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: env.REGISTRY == 'ghcr.io'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ env.USERNAME }}
-          password: ${{ env.PASSWORD }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      ## Docker Hub Registry
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: env.REGISTRY == 'docker.io'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
@@ -134,7 +153,8 @@ jobs:
           context: ${{ env.CONTEXT }}
           platforms: linux/amd64,linux/arm64
           file: docker/${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
-          build-args: ${{ env.BUILD_ARGS }}
+          build-args: |
+            ${{ needs.set-buildargs.outputs.build-args }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
