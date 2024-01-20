@@ -80,8 +80,8 @@ jobs:
         shell: "bash"
         run: |
           echo BUILD_ARGS=$(
-            [ "${DISTRO}" == alpine ] && echo "ALPINE_VER=${ALPINE_VER}" || echo "UBUNTU_VER=${UBUNTU_VER}");
-            [ "${RELEASE}" == stable ] && echo 3.0.34 || echo 3.0.35);
+            [ "${DISTRO}" == alpine ] && echo \"ALPINE_VER=${ALPINE_VER}\" || echo \"UBUNTU_VER=${UBUNTU_VER}\"
+            [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=3.0.34\" || echo \"PRIVOXY_VER=3.0.35\"
           ) >> $GITHUB_OUTPUT
 
   build:
