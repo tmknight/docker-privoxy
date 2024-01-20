@@ -1,4 +1,4 @@
-name: "Publish Docker Images via Workflows"
+name: "Publish Docker Images via Template"
 
 permissions:
   contents: read
@@ -7,48 +7,40 @@ permissions:
 
 on:
   workflow_dispatch:
-#   schedule:
-#     - cron: '00 05 * * *'
+  schedule:
+    - cron: '00 05 * * *'
 
 jobs:
-    ## Github Package
-    github-ubuntu-edge:
-        uses: ./.github/workflows/github-package-ubuntu-edge.yml
+  ## Ubuntu
+  ubuntu-edge:
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: edge
+    secrets: inherit
 
-    github-ubuntu-stable:
-        needs: github-ubuntu-edge
-        uses: ./.github/workflows/github-package-ubuntu.yml
+  ubuntu-stable:
+    needs: ubuntu-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: stable
+    secrets: inherit
 
-    github-alpine-edge:
-        uses: ./.github/workflows/github-package-alpine-edge.yml
+  ## Alpine
+  alpine-edge:
+    needs: ubuntu-stable
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: alpine
+      release: edge
+    secrets: inherit
 
-    github-alpine-stable:
-        needs: github-alpine-edge
-        uses: ./.github/workflows/github-package-alpine.yml
-
-    ## Docker Hub
-    docker-ubuntu-edge:
-        needs: github-ubuntu-edge
-        uses: ./.github/workflows/docker-publish-ubuntu-edge.yml
-        secrets: inherit
-
-    docker-ubuntu-stable:
-        needs:
-            - docker-ubuntu-edge
-            - github-ubuntu-stable
-        uses: ./.github/workflows/docker-publish-ubuntu.yml
-        secrets: inherit
-
-    docker-alpine-edge:
-        needs:
-            - docker-ubuntu-stable
-            - github-alpine-edge
-        uses: ./.github/workflows/docker-publish-alpine-edge.yml
-        secrets: inherit
-
-    docker-alpine-stable:
-        needs:
-            - docker-alpine-edge
-            - github-alpine-stable
-        uses: ./.github/workflows/docker-publish-alpine.yml
-        secrets: inherit
+  alpine-stable:
+    needs: alpine-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: alpine
+      release: stable
+      latest: true
+    secrets: inherit
