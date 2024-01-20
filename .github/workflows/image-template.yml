@@ -55,46 +55,24 @@ on:
           default: false
 
 env:
-  REGISTRY: ${{ github.event.inputs.registry }}
   # name of image
   IMAGE: privoxy
+  # gh or docker registry
+  REGISTRY: ${{ github.event.inputs.registry }}
   # repository as <account>/<repo>
   IMAGE_NAME: ${{ github.event.inputs.username }}/privoxy
+  # build context
   CONTEXT: .
+  # image distro
   DISTRO: ${{ github.event.inputs.distro }}
+  # image release
   RELEASE: ${{ github.event.inputs.release }}
+  # build arguments to be created in first step
+  BUILD_ARGS:
 
 jobs:
-  set-buildargs:
-    name: "Set build arguments"
-    runs-on: "ubuntu-latest"
-    outputs:
-      build-args-distro: ${{ steps.get-distrover.outputs.BUILD_ARGS }}
-      build-args-privoxy: ${{ steps.get-privoxyver.outputs.BUILD_ARGS }}
-
-    steps:
-      - name: "Get distro version"
-        id: "get-distrover"
-        env:
-          ALPINE_VER: ${{ vars.ALPINE_VER }}
-          UBUNTU_VER: ${{ vars.UBUNTU_VER }}
-        shell: "bash"
-        run: |
-          echo BUILD_ARGS=$(
-            [ "${DISTRO}" == alpine ] && echo \"ALPINE_VER=${ALPINE_VER}\" || echo \"UBUNTU_VER=${UBUNTU_VER}\"
-          ) >> $GITHUB_OUTPUT
-
-      - name: "Get privoxy version"
-        id: "get-privoxyver"
-        shell: "bash"
-        run: |
-          echo BUILD_ARGS=$(
-            [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=3.0.34\" || echo \"PRIVOXY_VER=3.0.35\"
-          ) >> $GITHUB_OUTPUT
-
   build:
     runs-on: ubuntu-latest
-    needs: set-buildargs
     permissions:
       contents: read
       packages: write
@@ -103,6 +81,20 @@ jobs:
       id-token: write
 
     steps:
+      - name: "Set build arguments"
+        id: "set-buildargs"
+        env:
+          ALPINE_VER: ${{ vars.ALPINE_VER }}
+          UBUNTU_VER: ${{ vars.UBUNTU_VER }}
+        shell: "bash"
+        run: |
+          {
+            echo 'BUILD_ARGS<<EOF'
+            [ "${DISTRO}" == alpine ] && echo \"ALPINE_VER=${ALPINE_VER}\" || echo \"UBUNTU_VER=${UBUNTU_VER}\"
+            [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=3.0.34\" || echo \"PRIVOXY_VER=3.0.35\"
+            echo EOF
+          } >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -116,10 +108,10 @@ jobs:
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
-      # Login against a Docker registry except on PR
+      # Login against a Docker registry
       # https://github.com/docker/login-action
       ## Github Registry
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into Github registry (${{ env.REGISTRY }})
         if: env.REGISTRY == 'ghcr.io'
         uses: docker/login-action@v2
         with:
@@ -128,7 +120,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       ## Docker Hub Registry
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into Docker Hub registry (${{ env.REGISTRY }})
         if: env.REGISTRY == 'docker.io'
         uses: docker/login-action@v2
         with:
@@ -144,7 +136,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch,enable=${{ github.event_name != 'schedule' }}
+            type=ref,event=branch,enable=${{ github.ref_name != 'schedule' && env.REGISTRY != 'docker.io' }}
             type=ref,event=tag
             type=schedule,pattern=nightly
             type=raw,enable=${{ (env.DISTRO == 'alpine' && env.RELEASE == 'stable') || github.event.inputs.latest }},value=latest
@@ -160,9 +152,7 @@ jobs:
           context: ${{ env.CONTEXT }}
           platforms: linux/amd64,linux/arm64
           file: docker/${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
-          build-args: |
-            ${{ needs.set-buildargs.outputs.build-args-distro }}
-            ${{ needs.set-buildargs.outputs.build-args-privoxy }}
+          build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
