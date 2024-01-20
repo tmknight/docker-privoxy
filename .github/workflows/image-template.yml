@@ -44,9 +44,9 @@ env:
   # build context
   CONTEXT: .
   # image distro
-  DISTRO: ${{ github.event.inputs.distro }}
+  DISTRO: ${{ inputs.distro }}
   # image release
-  RELEASE: ${{ github.event.inputs.release }}
+  RELEASE: ${{ inputs.release }}
   # build arguments to be created in first step
   BUILD_ARGS: ''
   IMAGE_PATHS: ''
@@ -131,7 +131,7 @@ jobs:
             type=ref,event=branch,enable=${{ github.event_name != 'schedule' && github.ref_name != 'main' }}
             type=ref,event=tag
             type=schedule,pattern=nightly
-            type=raw,enable=${{ github.event.inputs.latest }},value=latest
+            type=raw,enable=${{ inputs.latest }},value=latest
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
             type=raw,enable=${{ env.RELEASE == 'stable' }},value=${{ env.DISTRO }}
 
