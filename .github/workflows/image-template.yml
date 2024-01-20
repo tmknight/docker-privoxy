@@ -1,5 +1,5 @@
 # for Privoxy
-name: Build and Push Docker Image v2
+name: Build and Push Docker Image
 
 on:
   workflow_dispatch:
