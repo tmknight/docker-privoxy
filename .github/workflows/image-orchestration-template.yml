@@ -11,33 +11,35 @@ on:
     - cron: '00 05 * * *'
 
 jobs:
-    ## Ubuntu
-    github-ubuntu-edge:
-      uses: ./.github/workflows/image-template.yml
-      with:
-          distro: ubuntu
-          release: edge
-      secrets: inherit
+  ## Ubuntu
+  ubuntu-edge:
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: stable
+    secrets: inherit
 
-    github-ubuntu-stable:
-      uses: ./.github/workflows/image-template.yml
-      with:
-          distro: ubuntu
-          release: stable
-      secrets: inherit
+  ubuntu-stable:
+    needs: ubuntu-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: stable
+    secrets: inherit
 
-    ## Alpine
-    github-alpine-edge:
-      uses: ./.github/workflows/image-template.yml
-      with:
-          distro: alpine
-          release: edge
-      secrets: inherit
+  ## Alpine
+  alpine-edge:
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: alpine
+      release: edge
+    secrets: inherit
 
-    github-alpine-stable:
-      uses: ./.github/workflows/image-template.yml
-      with:
-          distro: alpine
-          release: stable
-          latest: true
-      secrets: inherit
+  alpine-stable:
+    needs: alpine-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: alpine
+      release: stable
+      latest: true
+    secrets: inherit
