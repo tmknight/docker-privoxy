@@ -41,8 +41,6 @@ env:
   IMAGE: privoxy
   # gh or docker registry
   REGISTRY: ghcr.io
-  # repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.event.inputs.username }}/privoxy
   # build context
   CONTEXT: .
   # image distro
@@ -51,6 +49,7 @@ env:
   RELEASE: ${{ github.event.inputs.release }}
   # build arguments to be created in first step
   BUILD_ARGS: ''
+  IMAGE_PATHS: ''
 
 jobs:
   build:
@@ -74,6 +73,19 @@ jobs:
             echo 'BUILD_ARGS<<EOF'
             [ "${DISTRO}" == alpine ] && echo \"ALPINE_VER=${ALPINE_VER}\" || echo \"UBUNTU_VER=${UBUNTU_VER}\"
             [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=3.0.34\" || echo \"PRIVOXY_VER=3.0.35\"
+            echo EOF
+          } >> $GITHUB_ENV
+
+      - name: "Set image paths to publish"
+        id: "set-image-paths"
+        env:
+          BRANCH: ${{ github.ref_name }}
+        shell: "bash"
+        run: |
+          {
+            echo 'IMAGE_PATHS<<EOF'
+            [ "${BRANCH}" == main ] && echo tmknight88/${IMAGE}
+            echo ${REGISTRY}/tmknight/${IMAGE}
             echo EOF
           } >> $GITHUB_ENV
 
@@ -114,7 +126,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_PATHS }}
           tags: |
             type=ref,event=branch,enable=${{ github.ref_name != 'schedule' && github.ref_name != 'main' }}
             type=ref,event=tag
