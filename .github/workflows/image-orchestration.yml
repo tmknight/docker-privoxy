@@ -1,8 +1,9 @@
 name: "Publish Docker Images"
 
 permissions:
-  packages: write
+  contents: read
   id-token: write
+  packages: write
 
 on:
   workflow_dispatch:
