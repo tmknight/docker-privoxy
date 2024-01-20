@@ -9,6 +9,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '00 05 * * *'
+  release:
+    types: published
 
 jobs:
   ## Ubuntu
