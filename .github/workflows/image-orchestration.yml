@@ -20,7 +20,6 @@ jobs:
         uses: ./.github/workflows/github-package-ubuntu.yml
 
     github-alpine-edge:
-        needs: github-ubuntu-stable
         uses: ./.github/workflows/github-package-alpine-edge.yml
 
     github-alpine-stable:
@@ -29,7 +28,7 @@ jobs:
 
     ## Docker Hub
     docker-ubuntu-edge:
-        needs: github-alpine-stable
+        needs: github-ubuntu-edge
         uses: ./.github/workflows/docker-publish-ubuntu-edge.yml
         secrets: inherit
 
