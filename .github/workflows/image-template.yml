@@ -69,11 +69,12 @@ jobs:
     name: "Set build arguments"
     runs-on: "ubuntu-latest"
     outputs:
-      build-args: ${{ steps.set-buildargs.outputs.BUILD_ARGS }}
+      build-args-distro: ${{ steps.get-distrover.outputs.BUILD_ARGS }}
+      build-args-privoxy: ${{ steps.get-privoxyver.outputs.BUILD_ARGS }}
 
     steps:
-      - name: "Get version"
-        id: "set-buildargs"
+      - name: "Get distro version"
+        id: "get-distrover"
         env:
           ALPINE_VER: ${{ vars.ALPINE_VER }}
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
@@ -81,6 +82,13 @@ jobs:
         run: |
           echo BUILD_ARGS=$(
             [ "${DISTRO}" == alpine ] && echo \"ALPINE_VER=${ALPINE_VER}\" || echo \"UBUNTU_VER=${UBUNTU_VER}\"
+          ) >> $GITHUB_OUTPUT
+
+      - name: "Get privoxy version"
+        id: "get-privoxyver"
+        shell: "bash"
+        run: |
+          echo BUILD_ARGS=$(
             [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=3.0.34\" || echo \"PRIVOXY_VER=3.0.35\"
           ) >> $GITHUB_OUTPUT
 
@@ -153,7 +161,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: docker/${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
           build-args: |
-            ${{ needs.set-buildargs.outputs.build-args }}
+            ${{ needs.set-buildargs.outputs.build-args-distro }}
+            ${{ needs.set-buildargs.outputs.build-args-privoxy }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
