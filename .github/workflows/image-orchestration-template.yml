@@ -29,6 +29,7 @@ jobs:
 
   ## Alpine
   alpine-edge:
+    needs: ubuntu-stable
     uses: ./.github/workflows/image-template.yml
     with:
       distro: alpine
