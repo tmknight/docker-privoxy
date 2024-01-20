@@ -16,7 +16,7 @@ jobs:
     uses: ./.github/workflows/image-template.yml
     with:
       distro: ubuntu
-      release: stable
+      release: edge
     secrets: inherit
 
   ubuntu-stable:
