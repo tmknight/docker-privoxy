@@ -75,15 +75,14 @@ jobs:
       - name: "Get version"
         id: "set-buildargs"
         env:
-          DISTRO: ${{ github.event.inputs.distro }}
-          RELEASE: ${{ github.event.inputs.release }}
           ALPINE_VER: ${{ vars.ALPINE_VER }}
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
         shell: "bash"
         run: |
-          DISTRO_VERSION=$([ "${DISTRO}" == alpine ] && echo "ALPINE_VER=${ALPINE_VER}" || echo "UBUNTU_VER=${UBUNTU_VER}");
-          PRIVOXY_VER=$([ "${RELEASE}" == stable ] && echo 3.0.34 || echo 3.0.35);
-          echo BUILD_ARGS=(${DISTRO_VERSION} ${PRIVOXY_VER}) >> $GITHUB_OUTPUT
+          echo BUILD_ARGS=$(
+            [ "${DISTRO}" == alpine ] && echo "ALPINE_VER=${ALPINE_VER}" || echo "UBUNTU_VER=${UBUNTU_VER}");
+            [ "${RELEASE}" == stable ] && echo 3.0.34 || echo 3.0.35);
+          ) >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
