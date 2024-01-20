@@ -3,6 +3,29 @@ name: Build and Push Docker Image
 
 on:
   workflow_dispatch:
+    inputs:
+      registry:
+        description: "One of ghcr.io or docker.io"
+        required: true
+        type: string
+      username:
+        description: "One of tmknight or tmnknight88"
+        required: true
+        type: string
+      distro:
+        description: "One of alpine or ubuntu"
+        required: true
+        type: string
+      release:
+        description: "One of stable or edge"
+        required: true
+        type: string
+      latest:
+          description: "Set 'latest' tag"
+          required: false
+          type: boolean
+          default: false
+
   workflow_call:
     inputs:
       registry:
