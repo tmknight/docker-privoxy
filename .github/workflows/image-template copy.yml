@@ -66,16 +66,19 @@ env:
   BUILD_ARGS:
 
 jobs:
-  set-buildargs:
-    name: "Set build arguments"
-    runs-on: "ubuntu-latest"
-    # outputs:
-    #   build-args-distro: ${{ steps.get-distrover.outputs.BUILD_ARGS }}
-    #   build-args-privoxy: ${{ steps.get-privoxyver.outputs.BUILD_ARGS }}
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
 
     steps:
-      - name: "Get distro version"
-        id: "get-distrover"
+      - name: "Set build arguments"
+        id: "set-buildargs"
         env:
           ALPINE_VER: ${{ vars.ALPINE_VER }}
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
@@ -88,17 +91,6 @@ jobs:
             echo EOF
           } >> $GITHUB_ENV
 
-  build:
-    runs-on: ubuntu-latest
-    needs: set-buildargs
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
