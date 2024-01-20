@@ -81,7 +81,7 @@ jobs:
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
         shell: "bash"
         run: |
-          DISTRO_VERSION=$([ "${DISTRO}" == "alpine" ] && "ALPINE_VER=${ALPINE_VER} || "UBUNTU_VER=${UBUNTU_VER}")
+          DISTRO_VERSION=$([ "${DISTRO}" == "alpine" ] && "ALPINE_VER=${ALPINE_VER}" || "UBUNTU_VER=${UBUNTU_VER}")
           PRIVOXY_VER=$([ "${RELEASE}" == "stable" ] && "3.0.34" || "3.0.34")
           echo BUILD_ARGS=(${DISTRO_VERSION} ${PRIVOXY_VER}) >> $GITHUB_OUTPUT
 
