@@ -104,11 +104,11 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: |
-            if: ${{ startsWith(env.REGISTRY, 'gh') }} ${{ github.actor }}
-            if: ${{ startsWith(env.REGISTRY, 'docker') }} ${{ secrets.DOCKERHUB_USERNAME }}
+            if: ${{ env.REGISTRY == 'ghcr.io' }} ${{ github.actor }}
+            if: ${{ env.REGISTRY == 'docker.io' }} ${{ secrets.DOCKERHUB_USERNAME }}
           password: |
-            if: ${{ startsWith(env.REGISTRY, 'gh') }} ${{ secrets.GITHUB_TOKEN }}
-            if: ${{ startsWith(env.REGISTRY, 'docker') }} ${{ secrets.DOCKERHUB_TOKEN }}
+            if: ${{ env.REGISTRY == 'ghcr.io' }} ${{ secrets.GITHUB_TOKEN }}
+            if: ${{ env.REGISTRY == 'docker.io' }} ${{ secrets.DOCKERHUB_TOKEN }}
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
