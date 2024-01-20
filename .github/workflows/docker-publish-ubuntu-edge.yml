@@ -8,10 +8,11 @@ name: Docker Publish Ubuntu Edge
 
 on:
   workflow_dispatch:
+  workflow_call:
   release:
     types: [published]
-  schedule:
-    - cron: '20 05 * * *'
+  # schedule:
+  #   - cron: '20 05 * * *'
   # push:
   #   paths-ignore:
   #     - '.github/**'

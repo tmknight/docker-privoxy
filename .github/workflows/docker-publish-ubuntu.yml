@@ -8,10 +8,11 @@ name: Docker Publish Ubuntu
 
 on:
   workflow_dispatch:
+  workflow_call:
   release:
     types: [published]
-  schedule:
-    - cron: '25 05 * * *'
+  # schedule:
+  #   - cron: '25 05 * * *'
   # push:
   #   paths-ignore:
   #     - '.github/**'
