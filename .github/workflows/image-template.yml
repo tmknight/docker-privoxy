@@ -8,18 +8,22 @@ on:
         description: "One of ghcr.io or docker.io"
         required: true
         type: string
+        default: ghcr.io
       username:
         description: "One of tmknight or tmnknight88"
         required: true
         type: string
+        default: tmknight
       distro:
         description: "One of alpine or ubuntu"
         required: true
         type: string
+        default: alpine
       release:
         description: "One of stable or edge"
         required: true
         type: string
+        default: stable
       latest:
           description: "Set 'latest' tag"
           required: false
