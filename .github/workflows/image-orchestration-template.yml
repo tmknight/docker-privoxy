@@ -1,0 +1,58 @@
+name: "Publish Docker Images"
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '00 05 * * *'
+
+jobs:
+    ## Github Package
+    github-ubuntu-edge:
+        uses: ./.github/workflows/image-template.yml
+        with:
+            registry: ghcr.io
+            username: tmknight
+            distro: ubuntu
+            release: edge
+        secrets: inherit
+
+
+
+
+
+    # github-ubuntu-edge:
+    #     uses: ./.github/workflows/github-package-ubuntu-edge.yml
+
+    # github-ubuntu-stable:
+    #     needs: github-ubuntu-edge
+    #     uses: ./.github/workflows/github-package-ubuntu.yml
+
+    # github-alpine-edge:
+    #     needs: github-ubuntu-stable
+    #     uses: ./.github/workflows/github-package-alpine-edge.yml
+
+    # github-alpine-stable:
+    #     needs: github-alpine-edge
+    #     uses: ./.github/workflows/github-package-alpine.yml
+
+    # ## Docker Hub
+    # docker-ubuntu-edge:
+    #     needs: github-alpine-stable
+    #     uses: ./.github/workflows/docker-publish-ubuntu-edge.yml
+
+    # docker-ubuntu-stable:
+    #     needs: docker-ubuntu-edge
+    #     uses: ./.github/workflows/docker-publish-ubuntu.yml
+
+    # docker-alpine-edge:
+    #     needs: docker-ubuntu-stable
+    #     uses: ./.github/workflows/docker-publish-alpine-edge.yml
+
+    # docker-alpine-stable:
+    #     needs: docker-alpine-edge
+    #     uses: ./.github/workflows/docker-publish-alpine.yml
