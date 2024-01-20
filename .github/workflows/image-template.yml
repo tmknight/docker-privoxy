@@ -128,7 +128,7 @@ jobs:
         with:
           images: ${{ env.IMAGE_PATHS }}
           tags: |
-            type=ref,event=branch,enable=${{ github.ref_name != 'schedule' && github.ref_name != 'main' }}
+            type=ref,event=branch,enable=${{ github.event_name != 'schedule' && github.ref_name != 'main' }}
             type=ref,event=tag
             type=schedule,pattern=nightly
             type=raw,enable=${{ github.event.inputs.latest }},value=latest
