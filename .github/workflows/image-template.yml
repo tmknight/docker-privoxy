@@ -1,19 +1,9 @@
 # for Privoxy
-name: Build and Push Docker Image
+name: Build and Push Docker Image v2
 
 on:
   workflow_dispatch:
     inputs:
-      registry:
-        description: "One of ghcr.io or docker.io"
-        required: true
-        type: string
-        default: ghcr.io
-      username:
-        description: "One of tmknight or tmnknight88"
-        required: true
-        type: string
-        default: tmknight
       distro:
         description: "One of alpine or ubuntu"
         required: true
@@ -32,14 +22,6 @@ on:
 
   workflow_call:
     inputs:
-      registry:
-        description: "One of ghcr.io or docker.io"
-        required: true
-        type: string
-      username:
-        description: "One of tmknight or tmnknight88"
-        required: true
-        type: string
       distro:
         description: "One of alpine or ubuntu"
         required: true
@@ -58,9 +40,7 @@ env:
   # name of image
   IMAGE: privoxy
   # gh or docker registry
-  REGISTRY: ${{ github.event.inputs.registry }}
-  # repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.event.inputs.username }}/privoxy
+  REGISTRY: ghcr.io
   # build context
   CONTEXT: .
   # image distro
@@ -68,7 +48,8 @@ env:
   # image release
   RELEASE: ${{ github.event.inputs.release }}
   # build arguments to be created in first step
-  BUILD_ARGS:
+  BUILD_ARGS: ''
+  IMAGE_PATHS: ''
 
 jobs:
   build:
@@ -95,6 +76,19 @@ jobs:
             echo EOF
           } >> $GITHUB_ENV
 
+      - name: "Set image paths to publish"
+        id: "set-image-paths"
+        env:
+          BRANCH: ${{ github.ref_name }}
+        shell: "bash"
+        run: |
+          {
+            echo 'IMAGE_PATHS<<EOF'
+            [ "${BRANCH}" == main ] && echo tmknight88/${IMAGE}
+            echo ${REGISTRY}/tmknight/${IMAGE}
+            echo EOF
+          } >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -111,8 +105,7 @@ jobs:
       # Login against a Docker registry
       # https://github.com/docker/login-action
       ## Github Registry
-      - name: Log into Github registry (${{ env.REGISTRY }})
-        if: env.REGISTRY == 'ghcr.io'
+      - name: Log into registry ${{env.REGISTRY}}
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -120,11 +113,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       ## Docker Hub Registry
-      - name: Log into Docker Hub registry (${{ env.REGISTRY }})
-        if: env.REGISTRY == 'docker.io'
+      - name: Log into Docker Hub registry
+        if: ${{ github.ref_name == 'main' }}
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -134,12 +126,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_PATHS }}
           tags: |
-            type=ref,event=branch,enable=${{ github.ref_name != 'schedule' && env.REGISTRY != 'docker.io' }}
+            type=ref,event=branch,enable=${{ github.ref_name != 'schedule' && github.ref_name != 'main' }}
             type=ref,event=tag
             type=schedule,pattern=nightly
-            type=raw,enable=${{ (env.DISTRO == 'alpine' && env.RELEASE == 'stable') || github.event.inputs.latest }},value=latest
+            type=raw,enable=${{ github.event.inputs.latest }},value=latest
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
             type=raw,enable=${{ env.RELEASE == 'stable' }},value=${{ env.DISTRO }}
 
