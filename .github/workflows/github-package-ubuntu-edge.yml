@@ -8,8 +8,9 @@ name: GitHub Package Ubuntu Edge
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '00 05 * * *'
+  workflow_call:
+  # schedule:
+  #   - cron: '00 05 * * *'
   release:
     types: [published]
   push:

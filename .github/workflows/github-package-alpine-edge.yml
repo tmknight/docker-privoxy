@@ -8,8 +8,9 @@ name: GitHub Package Alpine Edge
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '10 05 * * *'
+  workflow_call:
+  # schedule:
+  #   - cron: '10 05 * * *'
   release:
     types: [published]
   push:
