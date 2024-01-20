@@ -53,7 +53,7 @@ on:
           required: false
           type: boolean
           default: false
-  
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ${{ github.event.inputs.registry }}
@@ -66,10 +66,14 @@ env:
   DISTRO: ${{ github.event.inputs.distro }}
   RELEASE: ${{ github.event.inputs.release }}
   BUILD_ARGS: |
-    if: ${{ github.event.inputs.distro == 'alpine' }} "ALPINE_VER=${{ vars.ALPINE_VER }}"
-    if: ${{ github.event.inputs.distro == 'ubuntu' }} "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
-    if: ${{ github.event.inputs.release == 'stable' }} "PRIVOXY_VER=3.0.34"
-    if: ${{ github.event.inputs.release == 'edge' }} "PRIVOXY_VER=3.0.35"
+    if: ${{ github.event.inputs.distro == 'alpine' }}
+    "ALPINE_VER=${{ vars.ALPINE_VER }}"
+    if: ${{ github.event.inputs.distro == 'ubuntu' }}
+    "UBUNTU_VER=${{ vars.UBUNTU_VER }}"
+    if: ${{ github.event.inputs.release == 'stable' }}
+    "PRIVOXY_VER=3.0.34"
+    if: ${{ github.event.inputs.release == 'edge' }}
+    "PRIVOXY_VER=3.0.35"
 
 jobs:
   build:
@@ -104,11 +108,15 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: |
-            if: ${{ env.REGISTRY == 'ghcr.io' }} ${{ github.actor }}
-            if: ${{ env.REGISTRY == 'docker.io' }} ${{ secrets.DOCKERHUB_USERNAME }}
+            if: ${{ env.REGISTRY == 'ghcr.io' }}
+            ${{ github.actor }}
+            if: ${{ env.REGISTRY == 'docker.io' }}
+            ${{ secrets.DOCKERHUB_USERNAME }}
           password: |
-            if: ${{ env.REGISTRY == 'ghcr.io' }} ${{ secrets.GITHUB_TOKEN }}
-            if: ${{ env.REGISTRY == 'docker.io' }} ${{ secrets.DOCKERHUB_TOKEN }}
+            if: ${{ env.REGISTRY == 'ghcr.io' }}
+            ${{ secrets.GITHUB_TOKEN }}
+            if: ${{ env.REGISTRY == 'docker.io' }}
+            ${{ secrets.DOCKERHUB_TOKEN }}
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
