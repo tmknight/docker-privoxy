@@ -33,16 +33,22 @@ jobs:
         secrets: inherit
 
     docker-ubuntu-stable:
-        needs: docker-ubuntu-edge
+        needs:
+            - docker-ubuntu-edge
+            - github-ubuntu-stable
         uses: ./.github/workflows/docker-publish-ubuntu.yml
         secrets: inherit
 
     docker-alpine-edge:
-        needs: docker-ubuntu-stable
+        needs:
+            - docker-ubuntu-stable
+            - github-alpine-edge
         uses: ./.github/workflows/docker-publish-alpine-edge.yml
         secrets: inherit
 
     docker-alpine-stable:
-        needs: docker-alpine-edge
+        needs:
+            - docker-alpine-edge
+            - github-alpine-stable
         uses: ./.github/workflows/docker-publish-alpine.yml
         secrets: inherit
