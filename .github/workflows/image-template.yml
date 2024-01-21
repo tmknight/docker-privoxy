@@ -130,7 +130,7 @@ jobs:
           tags: |
             type=ref,event=branch,enable=${{ github.event_name != 'schedule' && github.ref_name != 'main' }}
             type=ref,event=tag
-            type=schedule,pattern=nightly
+            type=schedule,pattern=nightly,enable=${{ env.DISTRO == 'alpine' && env.RELEASE == 'edge' }}
             type=raw,enable=${{ inputs.latest }},value=latest
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
             type=raw,enable=${{ env.RELEASE == 'stable' }},value=${{ env.DISTRO }}
