@@ -1,6 +1,6 @@
 # Docker Privoxy
 
-[![ImagePublish][ImagePublishBadge]][GitHubPackageLink]
+[![PublishImage][PublishImageBadge]][GitHubPackageLink]
 [![DockerSize][DockerSizeBadge]][DockerLink]
 [![DockerPulls][DockerPullsBadge]][DockerLink]
 
@@ -20,7 +20,7 @@ Build based on
   - Built from [source](https://www.privoxy.org/gitweb/?p=privoxy.git;a=summary)
   - With support for [SSL inspection](https://www.privoxy.org/faq/misc.html#SSL)
 
-[ImagePublishBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/image-orchestration-template.yml/badge.svg
+[PublishImageBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/image-orchestration.yml/badge.svg
 [GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
 [DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=black&color=green
 [DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/latest?icon=docker&label=Docker+Size&labelColor=black&color=green

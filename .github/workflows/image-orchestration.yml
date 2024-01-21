@@ -1,4 +1,4 @@
-name: "Publish Docker Images via Template"
+name: "Publish Docker Images"
 
 permissions:
   contents: read
