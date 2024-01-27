@@ -12,6 +12,8 @@ Build based on
 
 - Alpine `latest` stable
   - Updated nightly
+    - stable as `latest`
+    - edge as `nightly`
 - Ubuntu `latest`
   - Updated nightly
 - [Privoxy](https://www.privoxy.org/)
