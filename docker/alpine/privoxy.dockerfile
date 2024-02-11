@@ -9,7 +9,8 @@ LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.title=privoxy
 LABEL autoheal=true
 ENV CONFFILE=/etc/privoxy/config \
-  PIDFILE=/var/run/privoxy.pid
+  PIDFILE=/var/run/privoxy.pid \
+  PRIVOXY_VERSION=${PRIVOXY_VER}
 EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --start-period=10s --timeout=3s \
@@ -41,15 +42,14 @@ RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
   && cd /tmp/ \
   ## Begin source decision
-  ## Sourceforge stable
-  && curl -sLJO "https://www.privoxy.org/sf-download-mirror/Sources/${PRIVOXY_VER}%20%28stable%29/privoxy-${PRIVOXY_VER}-stable-src.tar.gz" \
-  && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz \
-  ## Git snapshot (2023-01-31)
-  # && curl -sLJ -o privoxy-${PRIVOXY_VER}-stable-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=HEAD;sf=tgz" \
-  # && mkdir ./privoxy-${PRIVOXY_VER}-stable \
-  # && tar xzvf privoxy-${PRIVOXY_VER}-stable-src.tar.gz -C ./privoxy-${PRIVOXY_VER}-stable --strip-components=1 \
+  && VER=$(echo "${PRIVOXY_VER}" | sed 's/\./_/g') \
+  && if [ "${PRIVOXY_VER}" = "edge" ]; then REF="HEAD"; else REF="refs/tags/v_${VER}"; fi \
+  && curl -sLJ -o privoxy-${PRIVOXY_VER}-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=${REF};sf=tgz" \
+  && mkdir ./privoxy-${PRIVOXY_VER} \
+  && tar xzvf privoxy-${PRIVOXY_VER}-src.tar.gz -C ./privoxy-${PRIVOXY_VER} --strip-components=1 \
   ## End source decision
-  && cd ./privoxy-${PRIVOXY_VER}-stable \
+  ## Build privoxy
+  && cd ./privoxy-${PRIVOXY_VER} \
   && autoheader \
   && autoconf \
   && ./configure \
