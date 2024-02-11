@@ -43,7 +43,7 @@ RUN mkdir -p /etc/privoxy \
   && cd /tmp/ \
   ## Begin source decision
   && VER=$(echo "${PRIVOXY_VER}" | sed 's/\./_/g') \
-  && if [ "${PRIVOXY_VER}" == "edge" ]; then REF="HEAD"; else REF="refs/tags/v_${VER}"; fi \
+  && if [ "${PRIVOXY_VER}" = "edge" ]; then REF="HEAD"; else REF="refs/tags/v_${VER}"; fi \
   && curl -sLJ -o privoxy-${PRIVOXY_VER}-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=${REF};sf=tgz" \
   && mkdir ./privoxy-${PRIVOXY_VER} \
   && tar xzvf privoxy-${PRIVOXY_VER}-src.tar.gz -C ./privoxy-${PRIVOXY_VER} --strip-components=1 \
