@@ -8,7 +8,7 @@ services:
     environment:
       TZ: America/New_York
     sysctls:
-      ## Recomended if using ipv4 only
+      ## Recommended if using ipv4 only
       - net.ipv6.conf.all.disable_ipv6=1
     ## Route traffic through NordVPN
     network_mode: container:nordvpn

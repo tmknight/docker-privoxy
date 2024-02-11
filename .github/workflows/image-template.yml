@@ -67,12 +67,13 @@ jobs:
         env:
           ALPINE_VER: ${{ vars.ALPINE_VER }}
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
+          PRIVOXY_STABLE: ${{ vars.PRIVOXY_STABLE }}
         shell: "bash"
         run: |
           {
             echo 'BUILD_ARGS<<EOF'
             [ "${DISTRO}" == alpine ] && echo \"ALPINE_VER=${ALPINE_VER}\" || echo \"UBUNTU_VER=${UBUNTU_VER}\"
-            [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=3.0.34\" || echo \"PRIVOXY_VER=3.0.35\"
+            [ "${RELEASE}" == stable ] && echo \"PRIVOXY_VER=${PRIVOXY_STABLE}\" || echo \"PRIVOXY_VER=edge\"
             echo EOF
           } >> $GITHUB_ENV
 
@@ -143,7 +144,7 @@ jobs:
         with:
           context: ${{ env.CONTEXT }}
           platforms: linux/amd64,linux/arm64
-          file: docker/${{ env.DISTRO }}/${{ env.RELEASE }}/${{ env.IMAGE }}.dockerfile
+          file: docker/${{ env.DISTRO }}/${{ env.IMAGE }}.dockerfile
           build-args: ${{ env.BUILD_ARGS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
