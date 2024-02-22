@@ -24,6 +24,6 @@ Build based on
 
 [PublishImageBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/image-orchestration.yml/badge.svg
 [GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
-[DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=black&color=green
-[DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/latest?icon=docker&label=Docker+Size&labelColor=black&color=green
+[DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=31383f&color=32c855
+[DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/latest?icon=docker&label=Docker+Size&labelColor=31383f&color=32c855
 [DockerLink]: https://hub.docker.com/r/tmknight88/privoxy
