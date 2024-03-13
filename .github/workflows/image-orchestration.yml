@@ -8,7 +8,7 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    - cron: '01 01 * * *'
+    - cron: '02 02 * * *'
   release:
     types: published
 
