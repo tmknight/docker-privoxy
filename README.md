@@ -1,8 +1,10 @@
 # Docker Privoxy
 
 [![PublishImage][PublishImageBadge]][GitHubPackageLink]
+<!-- 
+[![DockerSize][DockerSizeBadge]][DockerLink]
 [![DockerPulls][DockerPullsBadge]][DockerLink]
-<!-- [![DockerSize][DockerSizeBadge]][DockerLink] -->
+ -->
 
 ### The Privoxy non-caching web proxy for Docker
 
