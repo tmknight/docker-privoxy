@@ -35,6 +35,7 @@ RUN apt-get update -qq \
   openssl \
   libssl-dev \
   libpcre3-dev \
+  libpcre3 \
   privoxy \
   rename \
   tzdata \
