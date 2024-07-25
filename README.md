@@ -22,6 +22,8 @@ Build based on
   - Built from [source](https://www.privoxy.org/gitweb/?p=privoxy.git;a=summary)
   - With support for [SSL inspection](https://www.privoxy.org/faq/misc.html#SSL)
 
+I highly recommend [SwitchyOmega](https://github.com/FelisCatus/SwitchyOmega) browser extension to assist in leveraging Privoxy in your web browsing sessions
+
 [PublishImageBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/image-orchestration.yml/badge.svg
 [GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
 [DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=31383f&color=32c855
