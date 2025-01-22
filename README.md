@@ -17,8 +17,8 @@ Build based on
 - Ubuntu `latest`
   - Updated nightly
 - [Privoxy](https://www.privoxy.org/)
-  - Stable `3.0.34`
-  - Edge `3.0.35`
+  - Stable `4.0.0`
+  - Edge `4.x`
   - Built from [source](https://www.privoxy.org/gitweb/?p=privoxy.git;a=summary)
   - With support for [SSL inspection](https://www.privoxy.org/faq/misc.html#SSL)
 
