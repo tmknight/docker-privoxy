@@ -39,6 +39,7 @@ RUN apt-get update -qq \
   privoxy \
   rename \
   tzdata \
+  zlib1g \
   zlib1g-dev
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
