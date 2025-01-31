@@ -80,7 +80,7 @@ RUN mkdir -p /etc/privoxy \
   automake \
   build-essential \
   libssl-dev \
-  libpcre3-dev \
+  libpcre2-dev \
   rename \
   zlib1g-dev \
   && apt-get autoremove -y -qq \
