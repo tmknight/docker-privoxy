@@ -42,7 +42,7 @@ RUN apt-get update -qq \
   zlib1g \
   zlib1g-dev \
   brotli \
-  libbrotli-dev
+  brotli-dev
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
@@ -86,7 +86,7 @@ RUN mkdir -p /etc/privoxy \
   libpcre2-dev \
   rename \
   zlib1g-dev \
-  libbrotli-dev \
+  brotli-dev \
   && apt-get autoremove -y -qq \
   && apt-get clean -y -qq \
   && rm -rf \
