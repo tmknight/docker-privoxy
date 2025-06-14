@@ -79,7 +79,6 @@ RUN mkdir -p /etc/privoxy \
   openssl-dev \
   pcre-dev \
   zlib-dev \
-  brotli-libs \
   util-linux-misc \
   && rm -rf \
   /tmp/* \
