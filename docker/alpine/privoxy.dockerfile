@@ -36,6 +36,8 @@ RUN apk update \
   tzdata \
   zlib \
   zlib-dev \
+  brotli \
+  brotli-libs \
   util-linux-misc
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
@@ -59,6 +61,7 @@ RUN mkdir -p /etc/privoxy \
   --enable-compression \
   --with-openssl \
   --enable-extended-statistics \
+  --with-brotli \
   && make \
   && make -s install \
   && cd / \
@@ -76,6 +79,7 @@ RUN mkdir -p /etc/privoxy \
   openssl-dev \
   pcre-dev \
   zlib-dev \
+  brotli-libs \
   util-linux-misc \
   && rm -rf \
   /tmp/* \
