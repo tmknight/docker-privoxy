@@ -37,7 +37,7 @@ RUN apk update \
   zlib \
   zlib-dev \
   brotli \
-  brotli-libs \
+  brotli-dev \
   util-linux-misc
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
@@ -79,6 +79,7 @@ RUN mkdir -p /etc/privoxy \
   openssl-dev \
   pcre-dev \
   zlib-dev \
+  brotli-dev \
   util-linux-misc \
   && rm -rf \
   /tmp/* \
