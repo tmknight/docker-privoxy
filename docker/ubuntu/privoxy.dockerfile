@@ -40,7 +40,9 @@ RUN apt-get update -qq \
   rename \
   tzdata \
   zlib1g \
-  zlib1g-dev
+  zlib1g-dev \
+  brotli \
+  libbrotli-dev
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
@@ -62,6 +64,7 @@ RUN mkdir -p /etc/privoxy \
   --localstatedir=/var \
   --enable-compression \
   --with-openssl \
+  --with-brotli \
   --enable-extended-statistics \
   && make \
   && make -s install USER=privoxy GROUP=nogroup \
@@ -84,6 +87,7 @@ RUN mkdir -p /etc/privoxy \
   libpcre2-dev \
   rename \
   zlib1g-dev \
+  libbrotli-dev \
   && apt-get autoremove -y -qq \
   && apt-get clean -y -qq \
   && rm -rf \
