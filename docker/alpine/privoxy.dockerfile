@@ -30,8 +30,8 @@ RUN apk update \
   jq \
   openssl \
   openssl-dev \
-  pcre \
-  pcre-dev \
+  pcre2 \
+  pcre-dev2 \
   privoxy \
   tzdata \
   zlib \
@@ -77,7 +77,7 @@ RUN mkdir -p /etc/privoxy \
   alpine-sdk \
   autoconf \
   openssl-dev \
-  pcre-dev \
+  pcre2-dev \
   zlib-dev \
   brotli-dev \
   util-linux-misc \
