@@ -31,7 +31,7 @@ RUN apk update \
   openssl \
   openssl-dev \
   pcre2 \
-  pcre-dev2 \
+  pcre2-dev \
   privoxy \
   tzdata \
   zlib \
