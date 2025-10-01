@@ -15,7 +15,7 @@ EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --start-period=10s --timeout=3s \
   CMD pgrep -f privoxy || exit 1
-CMD /usr/local/bin/start
+CMD ["/usr/local/bin/start"]
 ## Core scripts
 COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
