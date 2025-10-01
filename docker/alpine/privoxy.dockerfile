@@ -3,7 +3,7 @@ FROM alpine:${ALPINE_VER}
 ARG ALPINE_VER
 ARG PRIVOXY_VER
 LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
-LABEL org.opencontainers.image.description DESCRIPTION
+LABEL org.opencontainers.image.description=DESCRIPTION
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.title=privoxy
