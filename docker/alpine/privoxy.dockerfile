@@ -3,7 +3,7 @@ FROM alpine:${ALPINE_VER}
 ARG ALPINE_VER
 ARG PRIVOXY_VER
 LABEL org.opencontainers.image.base.name="alpine:${ALPINE_VER}"
-LABEL org.opencontainers.image.description DESCRIPTION
+LABEL org.opencontainers.image.description=DESCRIPTION
 LABEL org.opencontainers.image.licenses=GPL-3.0
 LABEL org.opencontainers.image.source=https://github.com/tmknight/docker-privoxy
 LABEL org.opencontainers.image.title=privoxy
@@ -15,7 +15,7 @@ EXPOSE 8118
 VOLUME [ "/etc/privoxy", "/var/lib/privoxy/certs" ]
 HEALTHCHECK --start-period=10s --timeout=3s \
   CMD pgrep -f privoxy || exit 1
-CMD /usr/local/bin/start
+CMD ["/usr/local/bin/start"]
 ## Core scripts
 COPY ./scripts/ /usr/local/bin/
 RUN chmod -R +x \
@@ -30,8 +30,8 @@ RUN apk update \
   jq \
   openssl \
   openssl-dev \
-  pcre \
-  pcre-dev \
+  pcre2 \
+  pcre2-dev \
   privoxy \
   tzdata \
   zlib \
@@ -77,7 +77,7 @@ RUN mkdir -p /etc/privoxy \
   alpine-sdk \
   autoconf \
   openssl-dev \
-  pcre-dev \
+  pcre2-dev \
   zlib-dev \
   brotli-dev \
   util-linux-misc \
