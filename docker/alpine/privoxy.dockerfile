@@ -56,10 +56,10 @@ RUN mkdir -p /etc/privoxy \
   && autoconf \
   && ./configure \
   --prefix=/usr \
-  --sysconfdir=/etc \
   --localstatedir=/var \
-  --with-openssl \
+  --sysconfdir=/etc \
   --with-brotli \
+  --with-openssl \
   --enable-compression \
   --enable-extended-statistics \
   --enable-external-filters \
