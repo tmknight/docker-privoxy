@@ -62,8 +62,8 @@ RUN mkdir -p /etc/privoxy \
   --with-openssl \
   --enable-compression \
   --enable-extended-statistics \
-  --enable-external-filters \
-  --enable-pcre-host-patterns \
+  ##--enable-external-filters \
+  ##--enable-pcre-host-patterns \
   && make -s install \
   && cd / \
   && chown -R privoxy:privoxy /var/log/privoxy \
