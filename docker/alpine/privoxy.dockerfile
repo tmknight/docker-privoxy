@@ -56,12 +56,19 @@ RUN mkdir -p /etc/privoxy \
   && autoconf \
   && ./configure \
   --prefix=/usr \
-  --localstatedir=/var \
   --sysconfdir=/etc \
-  --with-brotli \
-  --with-openssl \
+  --localstatedir=/var \
   --enable-compression \
+  --with-openssl \
   --enable-extended-statistics \
+  --with-brotli \
+  ##--prefix=/usr \
+  ##--localstatedir=/var \
+  ##--sysconfdir=/etc \
+  ##--with-brotli \
+  ##--with-openssl \
+  ##--enable-compression \
+  ##--enable-extended-statistics \
   ##--enable-external-filters \
   ##--enable-pcre-host-patterns \
   && make -s install \
