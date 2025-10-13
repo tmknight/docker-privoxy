@@ -60,14 +60,14 @@ RUN mkdir -p /etc/privoxy \
   && autoconf \
   && ./configure \
   --prefix=/usr \
-  --sysconfdir=/etc \
   --localstatedir=/var \
-  --enable-compression \
-  --with-openssl \
+  --sysconfdir=/etc \
   --with-brotli \
+  --with-openssl \
+  --enable-compression \
   --enable-extended-statistics \
-  --enable-pcre-host-patterns \
   --enable-external-filters \
+  --enable-pcre-host-patterns \
   && make \
   && make -s install USER=privoxy GROUP=nogroup \
   && cd / \
