@@ -66,6 +66,8 @@ RUN mkdir -p /etc/privoxy \
   --with-openssl \
   --with-brotli \
   --enable-extended-statistics \
+  --enable-pcre-host-patterns \
+  --enable-external-filters \
   && make \
   && make -s install USER=privoxy GROUP=nogroup \
   && cd / \
