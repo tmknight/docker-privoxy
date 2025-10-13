@@ -58,11 +58,12 @@ RUN mkdir -p /etc/privoxy \
   --prefix=/usr \
   --sysconfdir=/etc \
   --localstatedir=/var \
-  --enable-compression \
   --with-openssl \
-  --enable-extended-statistics \
   --with-brotli \
-  && make \
+  --enable-compression \
+  --enable-extended-statistics \
+  --enable-external-filters \
+  --enable-pcre-host-patterns \
   && make -s install \
   && cd / \
   && chown -R privoxy:privoxy /var/log/privoxy \
