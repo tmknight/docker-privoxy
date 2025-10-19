@@ -13,22 +13,6 @@ on:
     types: published
 
 jobs:
-  ## Ubuntu
-  ubuntu-edge:
-    uses: ./.github/workflows/image-template.yml
-    with:
-      distro: ubuntu
-      release: edge
-    secrets: inherit
-
-  ubuntu-stable:
-    needs: ubuntu-edge
-    uses: ./.github/workflows/image-template.yml
-    with:
-      distro: ubuntu
-      release: stable
-    secrets: inherit
-
   ## Alpine
   alpine-edge:
     needs: ubuntu-stable
@@ -44,5 +28,22 @@ jobs:
     with:
       distro: alpine
       release: stable
+    secrets: inherit
+
+  ## Ubuntu
+  ubuntu-edge:
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: edge
+    secrets: inherit
+
+  ubuntu-stable:
+    needs: ubuntu-edge
+    uses: ./.github/workflows/image-template.yml
+    with:
+      distro: ubuntu
+      release: stable
       latest: true
     secrets: inherit
+
