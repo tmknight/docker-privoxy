@@ -132,7 +132,7 @@ jobs:
           tags: |
             type=ref,event=branch,enable=${{ github.event_name != 'schedule' && github.ref_name != 'main' }}
             type=ref,event=tag
-            type=schedule,pattern=nightly,enable=${{ env.DISTRO == 'alpine' && env.RELEASE == 'edge' }}
+            type=schedule,pattern=nightly,enable=${{ env.DISTRO == 'ubuntu' && env.RELEASE == 'edge' }}
             type=raw,enable=${{ inputs.latest }},value=latest
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
             type=raw,enable=${{ env.RELEASE == 'stable' }},value=${{ env.DISTRO }}
@@ -153,3 +153,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
+
