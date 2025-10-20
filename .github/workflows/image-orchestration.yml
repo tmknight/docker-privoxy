@@ -15,7 +15,7 @@ on:
 jobs:
   ## Alpine
   alpine-edge:
-    needs: ubuntu-stable
+
     uses: ./.github/workflows/image-template.yml
     with:
       distro: alpine
@@ -32,6 +32,7 @@ jobs:
 
   ## Ubuntu
   ubuntu-edge:
+    needs: alpine-stable
     uses: ./.github/workflows/image-template.yml
     with:
       distro: ubuntu
