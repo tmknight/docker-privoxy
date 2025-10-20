@@ -15,7 +15,6 @@ on:
 jobs:
   ## Alpine
   alpine-edge:
-
     uses: ./.github/workflows/image-template.yml
     with:
       distro: alpine
