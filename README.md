@@ -10,12 +10,10 @@ A companion project leveraging [Docker NordVPN](https://github.com/tmknight/dock
 
 Build based on
 
-- Alpine `latest` stable
+- Ubuntu `latest` stable
   - Updated nightly
     - stable as `latest`
     - edge as `nightly`
-- Ubuntu `latest`
-  - Updated nightly
 - [Privoxy](https://www.privoxy.org/)
   - Stable `4.x.x`
   - Edge `Latest from Source`
