@@ -1,6 +1,6 @@
 # Docker Privoxy
 
-[![PublishImage][PublishImageBadge]][GitHubPackageLink]
+[![PublishImage][DockerPublishingBadge]][GithubDLLink]
 [![DockerSize][DockerSizeBadge]][DockerLink]
 [![DockerPulls][DockerPullsBadge]][DockerLink]
 [![GithubDownloads][GithubDLBadge]][GithubDLLink]
@@ -23,10 +23,9 @@ Build based on
 
 I highly recommend [ZeroOmega](https://github.com/sn-o-w/ZeroOmega) browser extension to assist in leveraging Privoxy in your web browsing sessions
 
-[PublishImageBadge]: https://github.com/tmknight/docker-privoxy/actions/workflows/image-orchestration.yml/badge.svg
-[GitHubPackageLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
-[DockerPullsBadge]: https://badgen.net/docker/pulls/tmknight88/privoxy?icon=docker&label=Docker+Pulls&labelColor=31383f&color=32c855
-[DockerSizeBadge]: https://badgen.net/docker/size/tmknight88/privoxy/latest?icon=docker&label=Docker+Size&labelColor=31383f&color=32c855
+[DockerPublishingBadge]: https://img.shields.io/github/actions/workflow/status/tmknight/docker-privoxy/image-orchestration.yml?branch=main&style=flat-square&logo=github&label=publish%20image&cacheSeconds=9000
+[DockerPullsBadge]: https://img.shields.io/docker/pulls/tmknight88/privoxy?style=flat-square&logo=docker&color=blue&cacheSeconds=9000
+[DockerSizeBadge]: https://img.shields.io/docker/image-size/tmknight88/privoxy?sort=date&arch=amd64&style=flat-square&logo=docker&color=blue&cacheSeconds=9000
 [DockerLink]: https://hub.docker.com/r/tmknight88/privoxy
-[GithubDLBadge]: https://img.shields.io/badge/dynamic/json?style=flat&logo=github&labelColor=31383f&color=32c855&url=https%3A%2F%2Fipitio.github.io%2Fbackage%2Ftmknight%2Fdocker-privoxy%2Fprivoxy.json&query=%24.downloads&label=ghcr%20pulls&cacheSeconds=14400
+[GithubDLBadge]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=github&url=https%3A%2F%2Fipitio.github.io%2Fbackage%2Ftmknight%2Fdocker-privoxy%2Fprivoxy.json&query=%24.downloads&label=ghcr%20pulls&cacheSeconds=14400
 [GithubDLLink]: https://github.com/tmknight/docker-privoxy/pkgs/container/privoxy
