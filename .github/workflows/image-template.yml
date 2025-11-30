@@ -1,5 +1,5 @@
 # for Privoxy
-name: Build and Push Docker Image
+name: Image Build and Push Template
 
 on:
   workflow_dispatch:
@@ -153,4 +153,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
+
 
