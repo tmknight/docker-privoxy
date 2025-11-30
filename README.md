@@ -23,7 +23,7 @@ Build based on
 
 I highly recommend [ZeroOmega](https://github.com/sn-o-w/ZeroOmega) browser extension to assist in leveraging Privoxy in your web browsing sessions
 
-[DockerPublishingBadge]: https://img.shields.io/github/actions/workflow/status/tmknight/docker-privoxy/image-orchestration.yml?branch=main&style=flat-square&logo=github&label=publish%20image&cacheSeconds=9000
+[DockerPublishingBadge]: https://img.shields.io/github/actions/workflow/status/tmknight/docker-privoxy/docker-publish.yml?branch=main&style=flat-square&logo=github&label=publish%20image&cacheSeconds=9000
 [DockerPullsBadge]: https://img.shields.io/docker/pulls/tmknight88/privoxy?style=flat-square&logo=docker&color=blue&cacheSeconds=9000
 [DockerSizeBadge]: https://img.shields.io/docker/image-size/tmknight88/privoxy?sort=date&arch=amd64&style=flat-square&logo=docker&color=blue&cacheSeconds=9000
 [DockerLink]: https://hub.docker.com/r/tmknight88/privoxy
