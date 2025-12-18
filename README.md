@@ -11,15 +11,15 @@ A companion project leveraging [Docker NordVPN](https://github.com/tmknight/dock
 
 Build based on
 
-- Ubuntu `latest` stable
-  - Updated nightly
-    - stable as `latest`
-    - edge as `nightly`
 - [Privoxy](https://www.privoxy.org/)
   - Stable `4.x.x`
   - Edge `Latest from Source`
   - Built from [source](https://www.privoxy.org/gitweb/?p=privoxy.git;a=summary)
   - With support for [SSL inspection](https://www.privoxy.org/faq/misc.html#SSL)
+- Ubuntu `latest` stable
+  - Updated nightly
+    - stable as `latest`
+    - edge as `nightly`
 
 I highly recommend [ZeroOmega](https://github.com/sn-o-w/ZeroOmega) browser extension to assist in leveraging Privoxy in your web browsing sessions
 
