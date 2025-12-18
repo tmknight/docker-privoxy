@@ -7,7 +7,7 @@
 
 ### The Privoxy non-caching web proxy for Docker
 
-A companion project leveraging [Docker NordVPN](https://github.com/tmknight/docker-nordvpn)
+Designed as a companion to [Docker NordVPN](https://github.com/tmknight/docker-nordvpn)
 
 Build based on
 
