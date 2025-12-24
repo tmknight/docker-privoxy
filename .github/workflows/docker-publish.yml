@@ -19,10 +19,11 @@ jobs:
     with:
       distro: alpine
       release: edge
+      pause: 0
     secrets: inherit
 
   alpine-stable:
-    needs: alpine-edge
+    # needs: alpine-edge
     uses: ./.github/workflows/image-template.yml
     with:
       distro: alpine
@@ -31,7 +32,7 @@ jobs:
 
   ## Ubuntu
   ubuntu-edge:
-    needs: alpine-stable
+    # needs: alpine-stable
     uses: ./.github/workflows/image-template.yml
     with:
       distro: ubuntu
@@ -39,7 +40,7 @@ jobs:
     secrets: inherit
 
   ubuntu-stable:
-    needs: ubuntu-edge
+    # needs: ubuntu-edge
     uses: ./.github/workflows/image-template.yml
     with:
       distro: ubuntu
