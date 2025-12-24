@@ -48,6 +48,6 @@ jobs:
       distro: ubuntu
       release: stable
       latest: true
-      pause: 30
+      pause: 45
     secrets: inherit
 
