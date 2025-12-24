@@ -64,6 +64,7 @@ RUN mkdir -p /etc/privoxy \
   --enable-extended-statistics \
   --enable-external-filters \
   --enable-pcre-host-patterns \
+  && make \
   && make -s install \
   && cd / \
   && chown -R privoxy:privoxy /var/log/privoxy \
