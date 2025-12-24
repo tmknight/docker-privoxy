@@ -28,6 +28,7 @@ jobs:
     with:
       distro: alpine
       release: stable
+      pause: 30
     secrets: inherit
 
   ## Ubuntu
@@ -37,6 +38,7 @@ jobs:
     with:
       distro: ubuntu
       release: edge
+      pause: 0
     secrets: inherit
 
   ubuntu-stable:
@@ -46,5 +48,6 @@ jobs:
       distro: ubuntu
       release: stable
       latest: true
+      pause: 30
     secrets: inherit
 
