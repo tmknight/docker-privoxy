@@ -23,7 +23,7 @@ on:
         description: "Set pause time"
         required: false
         type: number
-        default: 0
+        default: 180
           
   workflow_call:
     inputs:
@@ -44,7 +44,7 @@ on:
         description: "Set pause time in seconds"
         required: false
         type: number
-        default: 0
+        default: 180
 env:
   # name of image
   IMAGE: privoxy
@@ -169,6 +169,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
+
 
 
 
