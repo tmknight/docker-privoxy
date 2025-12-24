@@ -142,7 +142,7 @@ jobs:
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
-        continue-on-error: true
+        continue-on-error: false
         with:
           context: ${{ env.CONTEXT }}
           platforms: linux/amd64,linux/arm64
@@ -153,5 +153,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
+
 
 
