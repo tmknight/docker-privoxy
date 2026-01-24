@@ -12,7 +12,7 @@ on:
 
 permissions:
   contents: write
-  releases: write
+  # releases: write
 
 jobs:
   create_release:
