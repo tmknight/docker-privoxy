@@ -2,6 +2,12 @@ name: Create patch release
 
 on:
   workflow_call:
+    inputs:
+      draft:
+        description: "Create the release as a draft"
+        required: false
+        type: boolean
+        default: true
     outputs:
       release_url:
         description: "URL of the created release"
@@ -28,9 +34,14 @@ jobs:
       - id: create_release
         name: Create new patch release
         uses: actions/github-script@v6
+        env:
+          SET_DRAFT: ${{ inputs.draft }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // Parse the set_draft value (env values are strings)
+            const set_draft = process.env.SET_DRAFT === 'true';
+
             // Fetch latest release (returns null if none)
             const latest = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
@@ -40,20 +51,22 @@ jobs:
               throw e;
             });
 
-            // Default initial tag if no previous release exists
-            let newTag = 'v0.0.1';
+            // Default initial tag if no previous release exists (plain semver x.y.z)
+            let newTag = '0.0.1';
 
             if (latest) {
               const tag = latest.data.tag_name || '';
-              // Accept tags like: 1.2.3 or v1.2.3 (ignore - / + suffixes)
-              const sem = tag.match(/^v?(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
+              // Only accept tags like: 1.2.3 (reject leading 'v' or other formats);
+              // allow optional - / + suffixes after the patch version
+              const sem = tag.match(/^\(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
               if (!sem) {
-                throw new Error(`Latest tag '${tag}' is not a semantic version (MAJOR.MINOR.PATCH).`);
+                throw new Error(`Latest tag '${tag}' is not a semantic version in the form MAJOR.MINOR.PATCH (e.g. 1.2.3). Leading 'v' is not permitted.`);
               }
               const major = parseInt(sem[1], 10);
               const minor = parseInt(sem[2], 10);
               const patch = parseInt(sem[3], 10) + 1;
-              newTag = `v${major}.${minor}.${patch}`;
+              // Use plain semantic versioning without 'v' prefix
+              newTag = `${major}.${minor}.${patch}`;
             }
 
             const created = await github.rest.repos.createRelease({
@@ -62,7 +75,7 @@ jobs:
               tag_name: newTag,
               name: newTag,
               body: `Automated patch release ${newTag}`,
-              draft: false,
+              draft: set_draft,
               prerelease: false
             });
 
