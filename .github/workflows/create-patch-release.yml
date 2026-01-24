@@ -1,6 +1,7 @@
 name: Create patch release
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       draft:
