@@ -32,56 +32,18 @@ jobs:
   create_release:
     name: Create patch release
     runs-on: ubuntu-latest
-
     outputs:
       release_url: ${{ fromJson(steps.create_release.outputs.result).url }}
       tag: ${{ fromJson(steps.create_release.outputs.result).tag }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Compute the new tag once (patch bump)
-      - id: compute_tag
-        name: Compute next patch tag
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const latest = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }).catch(e => {
-              if (e.status === 404) return null;
-              throw e;
-            });
-
-            let newTag = '0.0.1';
-
-            if (latest) {
-              const tag = latest.data.tag_name || '';
-              const sem = tag.match(/^(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
-              if (!sem) {
-                throw new Error(`Latest tag '${tag}' is not a semantic version in the form MAJOR.MINOR.PATCH (e.g. 1.2.3). Leading 'v' is not permitted.`);
-              }
-
-              const major = parseInt(sem[1], 10);
-              const minor = parseInt(sem[2], 10);
-              const patch = parseInt(sem[3], 10) + 1;
-
-              newTag = `${major}.${minor}.${patch}`;
-            }
-
-            core.setOutput('tag', newTag);
-
-      # Generate release notes from all commits between previous tag and newTag
-      - name: Generate release notes from commits
+      - name: Generate release notes
         id: release_notes
         uses: actions/github-script@v6
-        env:
-          NEW_TAG: ${{ steps.compute_tag.outputs.tag }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -93,46 +55,57 @@ jobs:
               throw e;
             });
 
-            const previousTag = latest ? latest.data.tag_name : null;
-            const newTag = process.env.NEW_TAG;
+            const previousTag = latest ? latest.data.tag_name : '';
 
-            if (!previousTag) {
-              core.setOutput('changelog', `Initial release at ${newTag}, no previous tag.`);
-              return;
-            }
-
-            const compare = await github.rest.repos.compareCommits({
+            const changelog = await github.rest.repos.generateReleaseNotes({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              base: previousTag,
-              head: newTag,
+              tag_name: 'HEAD',
+              previous_tag_name: previousTag
+            }).catch(e => {
+              console.log('Could not generate release notes:', e.message);
+              return { data: { body: 'No changes since last release' } };
             });
 
-            if (!compare.data.commits.length) {
-              core.setOutput('changelog', `No commits between ${previousTag} and ${newTag}.`);
-              return;
-            }
-
-            const lines = compare.data.commits.map(c => {
-              const sha = c.sha.substring(0, 7);
-              const msg = (c.commit.message || '').split('\n')[0];
-              return `- ${sha} ${msg}`;
-            });
-
-            const body = `Commits between ${previousTag} and ${newTag}:\n\n` + lines.join('\n');
-            core.setOutput('changelog', body);
+            core.setOutput('changelog', changelog.data.body);
 
       - id: create_release
         name: Create new patch release
         uses: actions/github-script@v6
         env:
           SET_DRAFT: ${{ inputs.draft || github.event_name == 'schedule' }}
-          NEW_TAG: ${{ steps.compute_tag.outputs.tag }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // Parse the set_draft value (env values are strings)
             const set_draft = process.env.SET_DRAFT === 'true';
-            const newTag = process.env.NEW_TAG;
+
+            // Fetch latest release (returns null if none)
+            const latest = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }).catch(e => {
+              if (e.status === 404) return null;
+              throw e;
+            });
+
+            // Default initial tag if no previous release exists (plain semver x.y.z)
+            let newTag = '0.0.1';
+
+            if (latest) {
+              const tag = latest.data.tag_name || '';
+              // Only accept tags like: 1.2.3 (reject leading 'v' or other formats);
+              // allow optional - / + suffixes after the patch version
+              const sem = tag.match(/^(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
+              if (!sem) {
+                throw new Error(`Latest tag '${tag}' is not a semantic version in the form MAJOR.MINOR.PATCH (e.g. 1.2.3). Leading 'v' is not permitted.`);
+              }
+              const major = parseInt(sem[1], 10);
+              const minor = parseInt(sem[2], 10);
+              const patch = parseInt(sem[3], 10) + 1;
+              // Use plain semantic versioning without 'v' prefix
+              newTag = `${major}.${minor}.${patch}`;
+            }
 
             const created = await github.rest.repos.createRelease({
               owner: context.repo.owner,
@@ -144,4 +117,5 @@ jobs:
               prerelease: false
             });
 
-            return { url: created.data.html_url, tag: newTag };
+            // Return structured JSON so the job can map outputs
+            return { url: created.data.html_url, tag: newTag }
