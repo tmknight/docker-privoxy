@@ -58,7 +58,7 @@ jobs:
               const tag = latest.data.tag_name || '';
               // Only accept tags like: 1.2.3 (reject leading 'v' or other formats);
               // allow optional - / + suffixes after the patch version
-              const sem = tag.match(/^\(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
+              const sem = tag.match(/^(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
               if (!sem) {
                 throw new Error(`Latest tag '${tag}' is not a semantic version in the form MAJOR.MINOR.PATCH (e.g. 1.2.3). Leading 'v' is not permitted.`);
               }
