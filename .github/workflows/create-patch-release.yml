@@ -25,7 +25,6 @@ on:
 
 permissions:
   contents: write
-  # releases: write
 
 jobs:
   create_release:
@@ -37,6 +36,36 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate release notes
+        id: release_notes
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const latest = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }).catch(e => {
+              if (e.status === 404) return null;
+              throw e;
+            });
+
+            const previousTag = latest ? latest.data.tag_name : '';
+
+            const changelog = await github.rest.repos.generateReleaseNotes({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: 'HEAD',
+              previous_tag_name: previousTag
+            }).catch(e => {
+              console.log('Could not generate release notes:', e.message);
+              return { data: { body: 'No changes since last release' } };
+            });
+
+            core.setOutput('changelog', changelog.data.body);
 
       - id: create_release
         name: Create new patch release
@@ -81,7 +110,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: newTag,
               name: newTag,
-              body: `Automated patch release ${newTag}`,
+              body: `${{ steps.release_notes.outputs.changelog }}`,
               draft: set_draft,
               prerelease: false
             });
