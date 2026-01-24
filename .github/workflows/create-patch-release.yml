@@ -22,6 +22,8 @@ on:
       tag:
         description: "Tag name of the created release"
         value: ${{ jobs.create_release.outputs.tag }}
+  schedule:
+    - cron: '0 0 1 * *'
 
 permissions:
   contents: write
@@ -71,7 +73,7 @@ jobs:
         name: Create new patch release
         uses: actions/github-script@v6
         env:
-          SET_DRAFT: ${{ inputs.draft }}
+          SET_DRAFT: ${{ inputs.draft || github.event_name == 'schedule' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
