@@ -1,0 +1,70 @@
+name: Create patch release
+
+on:
+  workflow_call:
+    outputs:
+      release_url:
+        description: "URL of the created release"
+        value: ${{ jobs.create_release.outputs.release_url }}
+      tag:
+        description: "Tag name of the created release"
+        value: ${{ jobs.create_release.outputs.tag }}
+
+permissions:
+  contents: write
+  releases: write
+
+jobs:
+  create_release:
+    name: Create patch release
+    runs-on: ubuntu-latest
+    outputs:
+      release_url: ${{ fromJson(steps.create_release.outputs.result).url }}
+      tag: ${{ fromJson(steps.create_release.outputs.result).tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - id: create_release
+        name: Create new patch release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Fetch latest release (returns null if none)
+            const latest = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }).catch(e => {
+              if (e.status === 404) return null;
+              throw e;
+            });
+
+            // Default initial tag if no previous release exists
+            let newTag = 'v0.0.1';
+
+            if (latest) {
+              const tag = latest.data.tag_name || '';
+              // Accept tags like: 1.2.3 or v1.2.3 (ignore - / + suffixes)
+              const sem = tag.match(/^v?(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/);
+              if (!sem) {
+                throw new Error(`Latest tag '${tag}' is not a semantic version (MAJOR.MINOR.PATCH).`);
+              }
+              const major = parseInt(sem[1], 10);
+              const minor = parseInt(sem[2], 10);
+              const patch = parseInt(sem[3], 10) + 1;
+              newTag = `v${major}.${minor}.${patch}`;
+            }
+
+            const created = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: newTag,
+              name: newTag,
+              body: `Automated patch release ${newTag}`,
+              draft: false,
+              prerelease: false
+            });
+
+            // Return structured JSON so the job can map outputs
+            return { url: created.data.html_url, tag: newTag }
