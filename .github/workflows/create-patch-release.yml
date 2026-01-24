@@ -64,7 +64,7 @@ jobs:
               previous_tag_name: previousTag
             }).catch(e => {
               console.log('Could not generate release notes:', e.message);
-              return { data: { body: 'No changes since last release' } };
+              return { data: { body: 'Apply updates to base continer image' } };
             });
 
             core.setOutput('changelog', changelog.data.body);
