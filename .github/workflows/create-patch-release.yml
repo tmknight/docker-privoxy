@@ -23,7 +23,7 @@ on:
         description: "Tag name of the created release"
         value: ${{ jobs.create_release.outputs.tag }}
   schedule:
-    - cron: "0 0 1 * *"
+    - cron: "8 8 1 * *"
 
 permissions:
   contents: write
