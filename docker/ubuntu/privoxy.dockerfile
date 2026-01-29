@@ -50,7 +50,7 @@ RUN mkdir -p /etc/privoxy \
   ## Begin source decision
   && VER=$(echo "${PRIVOXY_VER}" | sed 's/\./_/g') \
   && [ "${PRIVOXY_VER}" = "edge" ] && REF="HEAD" || REF="refs/tags/v_${VER}" \
-  && curl -sLJ -o privoxy-${PRIVOXY_VER}-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=${REF};sf=tgz" \
+  && curl -sLJ -b "Please_let_me_pass=1" -o privoxy-${PRIVOXY_VER}-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=${REF};sf=tgz" \
   && mkdir ./privoxy-${PRIVOXY_VER} \
   && tar xzvf privoxy-${PRIVOXY_VER}-src.tar.gz -C ./privoxy-${PRIVOXY_VER} --strip-components=1 \
   ## End source decision
