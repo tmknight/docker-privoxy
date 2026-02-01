@@ -73,7 +73,7 @@ jobs:
         name: Create new patch release
         uses: actions/github-script@v6
         env:
-          SET_DRAFT: ${{ inputs.draft || github.event_name == 'schedule' }}
+          SET_DRAFT: ${{ inputs.draft || github.event_name != 'schedule' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
