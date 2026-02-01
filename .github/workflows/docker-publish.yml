@@ -8,6 +8,12 @@ permissions:
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      latest:
+        description: "Set 'latest' tag"
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: "20 20 * * *"
   release:
@@ -48,6 +54,6 @@ jobs:
     with:
       distro: ubuntu
       release: stable
-      latest: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+      latest: ${{ (github.event_name == 'release' && github.event.action == 'published') || inputs.latest }}
       pause: 45
     secrets: inherit
