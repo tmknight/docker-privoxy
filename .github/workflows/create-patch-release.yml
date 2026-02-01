@@ -116,4 +116,6 @@ jobs:
     needs: create_release
     uses: ./.github/workflows/docker-publish.yml
     if: ${{ needs.create_release.outputs.draft == 'false' }}
+    with:
+      latest: true
     secrets: inherit
