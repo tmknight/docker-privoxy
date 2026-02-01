@@ -6,15 +6,15 @@ on:
       draft:
         description: "Create the release as a draft"
         required: false
-        type: boolean
-        default: true
+        type: string
+        default: 'true'
   workflow_call:
     inputs:
       draft:
         description: "Create the release as a draft"
         required: false
-        type: boolean
-        default: true
+        type: string
+        default: 'true'
     outputs:
       release_url:
         description: "URL of the created release"
