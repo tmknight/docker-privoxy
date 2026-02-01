@@ -54,6 +54,6 @@ jobs:
     with:
       distro: ubuntu
       release: stable
-      latest: ${{ (github.event_name == 'release' && github.event.action == 'published') || inputs.latest }}
+      latest: ${{ (github.event_name == 'release' && github.event.action == 'published') || inputs.latest == true }}
       pause: 45
     secrets: inherit
