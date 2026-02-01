@@ -24,6 +24,10 @@ on:
         required: false
         type: number
         default: 0
+      version:
+        description: "Set semantic version tag"
+        required: false
+        type: string
           
   workflow_call:
     inputs:
@@ -45,6 +49,11 @@ on:
         required: false
         type: number
         default: 0
+      version:
+        description: "Set semantic version tag"
+        required: false
+        type: string
+
 env:
   # name of image
   IMAGE: privoxy
@@ -145,6 +154,7 @@ jobs:
             type=ref,event=tag
             type=schedule,pattern=nightly,enable=${{ env.DISTRO == 'ubuntu' && env.RELEASE == 'edge' }}
             type=raw,enable=${{ inputs.latest }},value=latest
+            type=raw,enable=${{ null != inputs.version }},value=${{ inputs.version }}
             type=raw,enable=true,value=${{ env.DISTRO }}-${{ env.RELEASE }}
             type=raw,enable=${{ env.RELEASE == 'stable' }},value=${{ env.DISTRO }}
 
@@ -170,4 +180,5 @@ jobs:
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=The privoxy non-caching web proxy for Docker
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
+
 
