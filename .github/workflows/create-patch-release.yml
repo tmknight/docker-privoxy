@@ -53,7 +53,7 @@ jobs:
         env:
           # Ensure SET_DRAFT is the literal string 'true' or 'false' so it
           # can be safely compared in the script (process.env values are strings)
-          SET_DRAFT: ${{ (inputs.draft == true || github.event_name != 'schedule') && 'true' || 'false' }}
+          SET_DRAFT: ${{ (inputs.draft == 'true' || github.event_name != 'schedule') && 'true' || 'false' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
