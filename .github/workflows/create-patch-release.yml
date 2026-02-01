@@ -19,8 +19,11 @@ on:
       release_url:
         description: "URL of the created release"
         value: ${{ jobs.create_release.outputs.release_url }}
+      draft:
+        description: "Bool for release created as draft"
+        value: ${{ jobs.create_release.outputs.draft }}
       tag:
-        description: "Tag name of the created release"
+        description: "Semantic version of the created release"
         value: ${{ jobs.create_release.outputs.tag }}
   schedule:
     - cron: "8 8 1 * *"
@@ -118,4 +121,5 @@ jobs:
     if: ${{ needs.create_release.outputs.draft == 'false' }}
     with:
       latest: true
+      version: ${{ needs.create_release.outputs.tag }}
     secrets: inherit
