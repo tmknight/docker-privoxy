@@ -35,6 +35,7 @@ jobs:
     outputs:
       release_url: ${{ fromJson(steps.create_release.outputs.result).url }}
       tag: ${{ fromJson(steps.create_release.outputs.result).tag }}
+      draft: ${{ fromJson(steps.create_release.outputs.result).draft }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -107,4 +108,10 @@ jobs:
             });
 
             // Return structured JSON so the job can map outputs
-            return { url: created.data.html_url, tag: newTag }
+            return { url: created.data.html_url, tag: newTag, draft: set_draft }
+
+  trigger_docker_publish:
+    needs: create_release
+    uses: ./.github/workflows/docker-publish.yml
+    if: ${{ needs.create_release.outputs.draft == 'false' }}
+    secrets: inherit
