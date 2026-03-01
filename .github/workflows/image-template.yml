@@ -28,7 +28,7 @@ on:
         description: "Set semantic version tag"
         required: false
         type: string
-          
+
   workflow_call:
     inputs:
       distro:
@@ -68,8 +68,8 @@ env:
   # Number of seconds to pause
   PAUSE: ${{ inputs.pause }}
   # build arguments to be created in first step
-  BUILD_ARGS: ''
-  IMAGE_PATHS: ''
+  BUILD_ARGS: ""
+  IMAGE_PATHS: ""
 
 jobs:
   build:
@@ -82,12 +82,25 @@ jobs:
       id-token: write
 
     steps:
+      - name: "Get latest stable tag"
+        id: "get-latest-tag"
+        shell: "bash"
+        run: |
+          {
+            echo 'PRIVOXY_STABLE<<EOF'
+            curl -sLJ -b "Please_let_me_pass=1" 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags' |
+            grep -o '<a class="list name" href="[^"]*">[^<]*</a>' |
+            head -n1 |
+            sed 's/.*>\([^<]*\)<\/a>/\1/' |
+            sed 's/^v_//; s/_/./g')
+            echo EOF
+            } >> $GITHUB_ENV
+
       - name: "Set build arguments"
         id: "set-buildargs"
         env:
           ALPINE_VER: ${{ vars.ALPINE_VER }}
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
-          PRIVOXY_STABLE: ${{ vars.PRIVOXY_STABLE }}
         shell: "bash"
         run: |
           {
@@ -162,7 +175,7 @@ jobs:
       - name: Pause build
         id: pause-build
         run: sleep ${{ env.PAUSE }}s
-        
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
@@ -180,6 +193,3 @@ jobs:
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=The privoxy non-caching web proxy for Docker
           # cache-from: type=gha
           # cache-to: type=gha,mode=max
-
-
-
