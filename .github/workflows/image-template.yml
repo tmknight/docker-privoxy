@@ -92,7 +92,7 @@ jobs:
             grep -o '<a class="list name" href="[^"]*">[^<]*</a>' |
             head -n1 |
             sed 's/.*>\([^<]*\)<\/a>/\1/' |
-            sed 's/^v_//; s/_/./g')
+            sed 's/^v_//; s/_/./g'
             echo EOF
             } >> $GITHUB_ENV
 
