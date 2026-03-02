@@ -50,9 +50,9 @@ RUN mkdir -p /etc/privoxy \
   && cd /tmp/ \
   ## Begin source decision
   # && VER=$(echo "${PRIVOXY_VER}" | sed 's/\./_/g') \
-  && VER=$(curl -sLJ -b "Please_let_me_pass=1" "https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags" |
-      grep -m1 -o '<a class="list name" href="[^"]*">[^<]*</a>' |
-      sed 's/.*>\([^<]*\)<\/a>/\1/' |
+  && VER=$(curl -sLJ -b "Please_let_me_pass=1" "https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags" | \
+      grep -m1 -o '<a class="list name" href="[^"]*">[^<]*</a>' | \
+      sed 's/.*>\([^<]*\)<\/a>/\1/' | \
       sed 's/^v_//') \
   && [ "${PRIVOXY_VER}" = "edge" ] && REF="HEAD" || REF="refs/tags/v_${VER}" \
   && curl -sLJ -b "Please_let_me_pass=1" -o privoxy-${PRIVOXY_VER}-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=${REF};sf=tgz" \
