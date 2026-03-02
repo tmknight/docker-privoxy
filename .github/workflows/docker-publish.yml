@@ -19,7 +19,7 @@ on:
         required: false
         type: string
   schedule:
-    - cron: "20 21 * * *"
+    - cron: "50 23 * * *"
   release:
     types: published
 
