@@ -87,7 +87,7 @@ jobs:
         shell: "bash"
         run: |
           {
-            echo 'PRIVOXY_STABLE=<<EOF'
+            echo "PRIVOXY_STABLE<<EOF"
             curl -sLJ -b 'Please_let_me_pass=1' 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags' |
             grep -o '<a class="list name" href="[^"]*">[^<]*</a>' |
             head -n1 |
