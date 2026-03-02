@@ -70,6 +70,7 @@ env:
   # build arguments to be created in first step
   BUILD_ARGS: ""
   IMAGE_PATHS: ""
+  PRIVOXY_STABLE: ""
 
 jobs:
   build:
