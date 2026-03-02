@@ -91,6 +91,7 @@ jobs:
             head -n1 |
             sed 's/.*>\([^<]*\)<\/a>/\1/' |
             sed 's/^v_//; s/_/./g')
+          echo $TAG
           echo "PRIVOXY_STABLE=$TAG" >> $GITHUB_ENV
 
       - name: "Set build arguments"
