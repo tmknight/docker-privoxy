@@ -38,7 +38,8 @@ RUN apk update \
   zlib-dev \
   brotli \
   brotli-dev \
-  util-linux-misc
+  util-linux-misc \
+  grep
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \

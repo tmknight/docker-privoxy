@@ -42,7 +42,8 @@ RUN apt-get update -qq \
   zlib1g \
   zlib1g-dev \
   brotli \
-  libbrotli-dev
+  libbrotli-dev \
+  grep
 ## Build privoxy
 RUN mkdir -p /etc/privoxy \
   && mkdir -p /var/log/privoxy \
