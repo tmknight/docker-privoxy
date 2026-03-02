@@ -68,8 +68,8 @@ env:
   # Number of seconds to pause
   PAUSE: ${{ inputs.pause }}
   # build arguments to be created in first step
-  BUILD_ARGS: ""
-  IMAGE_PATHS: ""
+  BUILD_ARGS: ''
+  IMAGE_PATHS: ''
 
 jobs:
   build:
@@ -82,21 +82,12 @@ jobs:
       id-token: write
 
     steps:
-      - name: "Get latest stable tag"
-        id: "get-latest-tag"
-        shell: "bash"
-        run: |
-          TAG=$(curl -sLJ -b "Please_let_me_pass=1" "https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags" |
-            grep -m1 -o '<a class="list name" href="[^"]*">[^<]*</a>' |
-            sed 's/.*>\([^<]*\)<\/a>/\1/' |
-            sed 's/^v_//; s/_/./g')
-          echo "PRIVOXY_STABLE=$TAG" >> $GITHUB_ENV
-
       - name: "Set build arguments"
         id: "set-buildargs"
         env:
           ALPINE_VER: ${{ vars.ALPINE_VER }}
           UBUNTU_VER: ${{ vars.UBUNTU_VER }}
+          PRIVOXY_STABLE: ${{ vars.PRIVOXY_STABLE }}
         shell: "bash"
         run: |
           {
