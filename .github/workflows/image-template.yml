@@ -70,7 +70,6 @@ env:
   # build arguments to be created in first step
   BUILD_ARGS: ""
   IMAGE_PATHS: ""
-  PRIVOXY_STABLE: ""
 
 jobs:
   build:
@@ -87,7 +86,7 @@ jobs:
         id: "get-latest-tag"
         shell: "bash"
         run: |
-          TAG=$(curl -sLJ -b 'Please_let_me_pass=1' 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags' |
+          TAG=$(curl -sLJ -b "Please_let_me_pass=1" "https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags" |
             grep -m1 -o '<a class="list name" href="[^"]*">[^<]*</a>' |
             sed 's/.*>\([^<]*\)<\/a>/\1/' |
             sed 's/^v_//; s/_/./g')
