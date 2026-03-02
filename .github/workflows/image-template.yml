@@ -86,15 +86,12 @@ jobs:
         id: "get-latest-tag"
         shell: "bash"
         run: |
-          {
-            echo "PRIVOXY_STABLE<<EOF"
-            curl -sLJ -b 'Please_let_me_pass=1' 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags' |
+          TAG=$(curl -sLJ -b 'Please_let_me_pass=1' 'https://www.privoxy.org/gitweb/?p=privoxy.git;a=tags' |
             grep -o '<a class="list name" href="[^"]*">[^<]*</a>' |
             head -n1 |
             sed 's/.*>\([^<]*\)<\/a>/\1/' |
-            sed 's/^v_//; s/_/./g'
-            echo EOF
-          } >> $GITHUB_ENV
+            sed 's/^v_//; s/_/./g')
+          echo "PRIVOXY_STABLE=$TAG" >> $GITHUB_ENV
 
       - name: "Set build arguments"
         id: "set-buildargs"
