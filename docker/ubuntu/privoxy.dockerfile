@@ -53,8 +53,7 @@ RUN mkdir -p /etc/privoxy \
       grep -m1 -o '<a class="list name" href="[^"]*">[^<]*</a>' | \
       sed 's/.*>\([^<]*\)<\/a>/\1/' | \
       sed 's/^v_//') \
-  # && [ "${PRIVOXY_VER}" = "edge" ] && REF="HEAD" || REF="refs/tags/v_${VER}" \
-  && [ "${PRIVOXY_VER}" = "edge" ] && REF="HEAD" || { REF="refs/tags/v_${VER}"; PRIVOXY_VER=${VER//_/.}; } \
+  && [ "${PRIVOXY_VER}" = "edge" ] && REF="HEAD" || REF="refs/tags/v_${VER}" \
   && curl -sLJ -b "Please_let_me_pass=1" -o privoxy-${PRIVOXY_VER}-src.tar.gz "https://www.privoxy.org/gitweb/?p=privoxy.git;a=snapshot;h=${REF};sf=tgz" \
   && mkdir ./privoxy-${PRIVOXY_VER} \
   && tar xzvf privoxy-${PRIVOXY_VER}-src.tar.gz -C ./privoxy-${PRIVOXY_VER} --strip-components=1 \
