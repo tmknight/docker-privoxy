@@ -111,7 +111,7 @@ jobs:
           } >> $GITHUB_ENV
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Setup QEMU for multi-arch
       - name: Set up QEMU
